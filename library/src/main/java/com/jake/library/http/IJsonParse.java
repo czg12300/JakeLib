@@ -1,6 +1,8 @@
 
 package com.jake.library.http;
 
+import org.json.JSONObject;
+
 /**
  * 描述：json解析接口
  *
@@ -9,5 +11,5 @@ package com.jake.library.http;
  */
 
 public interface IJsonParse {
-    Object parseJson(String json);
+    Object parseJson(JSONObject root);
 }
