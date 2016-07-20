@@ -1,6 +1,8 @@
 
 package com.jake.library.utils;
 
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,11 +21,16 @@ public final class ViewUtil {
         }
     }
 
-    public static void setViewVisibility(View view, int visible) {
-        if (view != null) {
-            if (view.getVisibility() != visible) {
-                view.setVisibility(visible);
-            }
-        }
+    public static ColorFilter color2ColorFilter(int color) {
+        int red = (color & 0xFF0000) / 0xFFFF;
+        int green = (color & 0xFF00) / 0xFF;
+        int blue = color & 0xFF;
+
+        float[] matrix = {
+                0, 0, 0, 0, red, 0, 0, 0, 0, green, 0, 0, 0, 0, blue, 0, 0, 0, 1, 0
+        };
+
+        return new ColorMatrixColorFilter(matrix);
     }
+
 }
