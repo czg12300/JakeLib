@@ -16,15 +16,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2016/7/18 17:35
  */
 
-public abstract class BaseRequestPackage {
+public abstract class BaseMultiRequestPackage {
 
-    private Class<? extends IJsonParse> mRespClass;
+    private Class<? extends IMultiJsonParse> mRespClass;
 
     private ConcurrentHashMap<String, Object> mParams;
 
     private String mCmd;
 
-    public BaseRequestPackage(String cmd, Class<? extends IJsonParse> respClass) {
+    public BaseMultiRequestPackage(String cmd, Class<? extends IMultiJsonParse> respClass) {
         if (TextUtils.isEmpty(cmd)) {
             throw new NullPointerException("接口名不能为空");
         }
@@ -78,7 +78,7 @@ public abstract class BaseRequestPackage {
         return null;
     }
 
-    public IJsonParse getJsonParse() {
+    public IMultiJsonParse getJsonParse() {
         try {
             return mRespClass.newInstance();
         } catch (InstantiationException e) {

@@ -1,10 +1,10 @@
 
 package com.jake.jakelib;
 
+import com.jake.jakelib.skin.ViewHelper;
 import com.jake.library.ui.skin.BaseSkinActivity;
 import com.jake.library.ui.skin.ISkinChangingCallback;
 import com.jake.library.ui.skin.SkinManager;
-import com.nineoldandroids.view.ViewHelper;
 
 import android.content.res.AssetManager;
 import android.content.res.Resources;

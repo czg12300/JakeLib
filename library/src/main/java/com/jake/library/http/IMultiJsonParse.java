@@ -10,6 +10,6 @@ import org.json.JSONObject;
  * @since 2016/7/18 17:31
  */
 
-public interface IJsonParse {
-    boolean parseJson(String json);
+public interface IMultiJsonParse {
+    Object parseJson(JSONObject root);
 }

@@ -30,7 +30,7 @@ import okhttp3.Response;
  * @since 2016/7/18 17:29
  */
 
-public abstract class BaseHttpRequest {
+public abstract class BaseMultiHttpRequest {
     private static final String TAG_REQUEST = "request_general";
 
     private static final String TAG_RESPONSE = "response_general";
@@ -41,13 +41,13 @@ public abstract class BaseHttpRequest {
 
     private boolean mIsCancel = false;
 
-    private BaseRequestPackage[] mBaseRequestPackages;
+    private BaseMultiRequestPackage[] mBaseRequestPackages;
 
-    public BaseHttpRequest() {
+    public BaseMultiHttpRequest() {
         this(false);
     }
 
-    public BaseHttpRequest(boolean isPost) {
+    public BaseMultiHttpRequest(boolean isPost) {
         mIsPost = isPost;
         mClient = new OkHttpClient();
     }
@@ -93,7 +93,7 @@ public abstract class BaseHttpRequest {
     protected JSONArray getPrivateParams() {
         if (mBaseRequestPackages != null && mBaseRequestPackages.length > 0) {
             JSONArray array = new JSONArray();
-            for (BaseRequestPackage baseRequestPackage : mBaseRequestPackages) {
+            for (BaseMultiRequestPackage baseRequestPackage : mBaseRequestPackages) {
                 if (baseRequestPackage != null && baseRequestPackage.getParamsJson() != null) {
                     array.put(baseRequestPackage.getParamsJson());
                 }
@@ -139,11 +139,11 @@ public abstract class BaseHttpRequest {
         mIsCancel = true;
     }
 
-    public void setRequestPackages(BaseRequestPackage... baseRequestPackages) {
+    public void setRequestPackages(BaseMultiRequestPackage... baseRequestPackages) {
         this.mBaseRequestPackages = baseRequestPackages;
     }
 
-    public void request(final IHttpCallback callback) {
+    public void request(final IMultiHttpCallback callback) {
         if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext())) {
             noNetwork();
             return;
@@ -178,7 +178,7 @@ public abstract class BaseHttpRequest {
     }
 
     private ConcurrentHashMap<String, Object> handleResponse(Response httpResponse,
-            IHttpCallback callback) throws IOException {
+            IMultiHttpCallback callback) throws IOException {
         if (httpResponse != null && httpResponse.isSuccessful() && !mIsCancel) {
             String result = httpResponse.body().string();
             LogUtil.d(TAG_RESPONSE, result);
@@ -191,7 +191,7 @@ public abstract class BaseHttpRequest {
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.optJSONObject(i);
                             if (object != null) {
-                                for (BaseRequestPackage baseRequestPackage : mBaseRequestPackages) {
+                                for (BaseMultiRequestPackage baseRequestPackage : mBaseRequestPackages) {
                                     if (TextUtils.equals(
                                             object.optString(baseRequestPackage.getCmdKey()),
                                             baseRequestPackage.getCmdValue())

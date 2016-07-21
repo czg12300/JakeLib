@@ -4,14 +4,12 @@ package com.jake.jakelib;
 import com.jake.jakelib.http.Cmd;
 import com.jake.jakelib.http.MyResponse;
 import com.jake.jakelib.http.MyResponse1;
-import com.jake.jakelib.http.RequestPackage;
 import com.jake.jakelib.http.RequestTask;
-import com.jake.library.http.IHttpCallback;
+import com.jake.library.http.IMultiHttpCallback;
 import com.jake.library.ui.BaseActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.HandlerThread;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,7 +33,7 @@ public class MainActivity extends BaseActivity {
         startActivity(new Intent(this,SkinTestActivity.class));
         RequestTask task = new RequestTask();
         task.setRequestPackages(Cmd.test(), Cmd.test1());
-        task.request(new IHttpCallback() {
+        task.request(new IMultiHttpCallback() {
             @Override
             public void onFailure(final String json) {
                 textView.post(new Runnable() {

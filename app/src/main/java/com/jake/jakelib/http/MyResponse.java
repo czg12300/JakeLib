@@ -1,6 +1,6 @@
 package com.jake.jakelib.http;
 
-import com.jake.library.http.IJsonParse;
+import com.jake.library.http.IMultiJsonParse;
 
 import org.json.JSONObject;
 
@@ -11,7 +11,7 @@ import org.json.JSONObject;
  * @since 2016/7/19 15:12
  */
 
-public class MyResponse implements IJsonParse{
+public class MyResponse implements IMultiJsonParse {
     private String json;
 
     public String getJson() {

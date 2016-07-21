@@ -9,14 +9,14 @@ package com.jake.jakelib.http;
  */
 
 public class Cmd {
-    public static RequestPackage test() {
-        RequestPackage requestPackage = new RequestPackage("46", MyResponse.class);
+    public static MultiRequestPackage test() {
+        MultiRequestPackage requestPackage = new MultiRequestPackage("46", MyResponse.class);
         requestPackage.addParam("type", "1");
         requestPackage.addParam("itemtypeid", "138");
         return requestPackage;
     }
-    public static RequestPackage test1() {
-        RequestPackage requestPackage = new RequestPackage("1074", MyResponse1.class);
+    public static MultiRequestPackage test1() {
+        MultiRequestPackage requestPackage = new MultiRequestPackage("1074", MyResponse1.class);
         requestPackage.addParam("bannertypeid", "7");
         return requestPackage;
     }

@@ -1,7 +1,7 @@
 
 package com.jake.jakelib.http;
 
-import com.jake.library.http.BaseHttpRequest;
+import com.jake.library.http.BaseMultiHttpRequest;
 import com.jake.library.utils.MD5Util;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2016/7/19 14:53
  */
 
-public class RequestTask extends BaseHttpRequest {
+public class RequestTask extends BaseMultiHttpRequest {
     @Override
     protected String getServerUrl() {
         return "http://gcapi.sy.kugou.com/index.php?r=GameCenter/apiV2";

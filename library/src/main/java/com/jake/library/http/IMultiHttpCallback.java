@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2016/7/19 15:19
  */
 
-public interface IHttpCallback {
+public interface IMultiHttpCallback {
     public void onFailure(String exception);
 
     public void onResponse(ConcurrentHashMap<String, Object> responseMap);

@@ -1,7 +1,9 @@
 
 package com.jake.library.ui.skin;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.view.LayoutInflaterFactory;
@@ -25,6 +27,7 @@ import java.util.Map;
 /**
  * Created by zhy on 15/9/22.
  */
+@TargetApi(Build.VERSION_CODES.KITKAT)
 public class BaseSkinActivity extends BaseActivity
         implements ISkinChangedListener, LayoutInflaterFactory {
     static final Class<?>[] sConstructorSignature = new Class[] {
@@ -66,28 +69,6 @@ public class BaseSkinActivity extends BaseActivity
             e.printStackTrace();
         }
 
-        // if ("fragment".equals(name))
-        // {
-        // view = super.onCreateView(name, context, attrs);
-        // }
-        // final boolean isPre21 = Build.VERSION.SDK_INT < 21;
-        //
-        // if (mAppCompatViewInflater == null)
-        // {
-        // mAppCompatViewInflater = new AppCompatViewInflater();
-        // }
-        //
-        // boolean subDecorInstalled = true;
-        // final boolean inheritContext = isPre21 && subDecorInstalled && parent
-        // != null
-        // && parent.getId() != android.R.id.content
-        // && !ViewCompat.isAttachedToWindow(parent);
-        //
-        // view = mAppCompatViewInflater.createView(parent, name, context,
-        // attrs, inheritContext,
-        // isPre21,
-        // true);
-        //
         List<SkinAttr> skinAttrList = SkinAttrSupport.getSkinAttrs(attrs, context);
         if (skinAttrList.isEmpty()) {
             return view;
@@ -169,8 +150,7 @@ public class BaseSkinActivity extends BaseActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        LayoutInflaterCompat.setFactory(layoutInflater, this);
+        LayoutInflaterCompat.setFactory(getLayoutInflater(), this);
         super.onCreate(savedInstanceState);
         SkinManager.getInstance().addChangedListener(this);
     }
