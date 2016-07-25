@@ -8,11 +8,11 @@ package com.jake.library.download;
  * @since 2016/7/21
  */
 public interface IDownloadListener {
-    void onStart();
+    void onStart(String url);
 
-    void onSuccess();
+    void onSuccess(String url, String filePath);
 
-    void onFail();
+    void onFail(String url);
 
-    void onProgress(int positionSize, int totalSize);
+    void onProgress(String url, int positionSize, int totalSize);
 }
