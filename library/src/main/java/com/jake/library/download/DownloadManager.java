@@ -1,20 +1,17 @@
 
 package com.jake.library.download;
 
-import android.annotation.TargetApi;
-import android.os.Build;
-import android.text.TextUtils;
-import android.view.ViewStub;
-
 import com.jake.library.BaseApplication;
 import com.jake.library.download.db.DownloadFileOperator;
 import com.jake.library.download.db.DownloadFileTable;
 import com.jake.library.utils.MD5Util;
 import com.jake.library.utils.ThreadPoolUtil;
 
+import android.text.TextUtils;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 描述:下载器,支持多线程，断点续传
@@ -26,50 +23,46 @@ public class DownloadManager {
     private static String mDownloadFilePath = BaseApplication.getInstance().getCacheDir()
             .getAbsolutePath();
 
-    private static ArrayList<IDownloadListener> mDownloadListeners = new ArrayList<>();
-
     private static DownloadFileOperator mDownloadFileOperator = new DownloadFileOperator(
             BaseApplication.getInstance().getContext());
+
     public static void setDownloadFilePath(String absolutePath) {
         mDownloadFilePath = absolutePath;
     }
 
     public static void download(String url) {
-        start(url);
-        if (!isAlreadyDownloadedInSdcard(url)) {
-
-            DownloadFileTable table = mDownloadFileOperator.query(getKey(url), new String[] {
-                    DownloadFileTable.FILE_PATH
-            });
-            if (table != null) {
-                if (table.isFinish()) {
-                    if (TextUtils.isEmpty(table.getFilePath())) {
-                        File file = new File(table.getFilePath());
-                        if (file.exists() && file.isFile()) {
-                            success(url, file.getPath());
-                            return;
-                        }
-                    }else{
-                        DownloadJob job=new DownloadJob(url);
-                        ThreadPoolUtil.execute(job);
-                    }
-                } else {
-                    DownloadJob job=new DownloadJob(url);
-                    ThreadPoolUtil.execute(job);
-                }
-            }
-
+        final String key = getKey(url);
+        if (isExistInCache(key)) {
+            return;
         }
-    }
-
-    private static boolean hasDownloadedPart(String url) {
-        DownloadFileTable table = mDownloadFileOperator.query(getKey(url), new String[] {
+        if (isAlreadyDownloadedInSdcard(url)) {
+            return;
+        }
+        DownloadFileTable table = mDownloadFileOperator.query(key, new String[] {
                 DownloadFileTable.FILE_PATH
         });
-        if (table != null && TextUtils.equals(getKey(url), table.getFileId())) {
-            return true;
+        if (table != null) {
+            if (table.isFinish()) {
+                if (TextUtils.isEmpty(table.getFilePath())) {
+                    File file = new File(table.getFilePath());
+                    if (file.exists() && file.isFile()) {
+                        success(url, file.getPath());
+                        return;
+                    }
+                } else {
+                    startDownload(key, url);
+                }
+            } else {
+                startDownload(key, url);
+            }
         }
-        return false;
+
+    }
+
+    private static void startDownload(String key, String url) {
+        DownloadJob job = new DownloadJob(url);
+        addDownloadJobToCache(key, job);
+        ThreadPoolUtil.execute(job);
     }
 
     private static boolean isAlreadyDownloadedInSdcard(String url) {
@@ -82,17 +75,7 @@ public class DownloadManager {
         return false;
     }
 
-    private static void start(String url) {
-        if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
-            for (IDownloadListener listener : mDownloadListeners) {
-                if (listener != null) {
-                    listener.onStart(url);
-                }
-            }
-        }
-    }
-
-    private static void fail(String url) {
+    public synchronized static void fail(String url) {
         if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
             for (IDownloadListener listener : mDownloadListeners) {
                 if (listener != null) {
@@ -102,7 +85,7 @@ public class DownloadManager {
         }
     }
 
-    private static void progress(String url, int positionSize, int totalSize) {
+    public synchronized static void progress(String url, int positionSize, int totalSize) {
         if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
             for (IDownloadListener listener : mDownloadListeners) {
                 if (listener != null) {
@@ -112,7 +95,7 @@ public class DownloadManager {
         }
     }
 
-    private static void success(String url, String path) {
+    public synchronized static void success(String url, String path) {
         if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
             for (IDownloadListener listener : mDownloadListeners) {
                 if (listener != null) {
@@ -135,7 +118,53 @@ public class DownloadManager {
      * @param url
      * @return
      */
-    private static String getKey(String url) {
+    public synchronized static String getKey(String url) {
         return MD5Util.getMd5(url);
+    }
+
+    private static ArrayList<IDownloadListener> mDownloadListeners = new ArrayList<>();
+
+    public synchronized static void addDownloadListener(IDownloadListener listener) {
+        if (listener != null) {
+            mDownloadListeners.add(listener);
+        }
+    }
+
+    public synchronized static void removeDownloadListener(IDownloadListener listener) {
+        if (listener != null) {
+            mDownloadListeners.remove(listener);
+        }
+    }
+
+    public synchronized static ArrayList<IDownloadListener> getAllDownloadListener() {
+        return mDownloadListeners;
+    }
+
+    // 下载文件缓存
+    private static ConcurrentHashMap<String, DownloadJob> mCacheMap = new ConcurrentHashMap<>();
+
+    public synchronized static void addDownloadJobToCache(String key, DownloadJob job) {
+        if (TextUtils.isEmpty(key)) {
+            return;
+        }
+        mCacheMap.put(key, job);
+    }
+
+    public synchronized static void removeDownloadJobFromCache(String key) {
+        if (TextUtils.isEmpty(key)) {
+            return;
+        }
+        mCacheMap.remove(key);
+    }
+
+    public synchronized static DownloadJob getDownloadJobFromCache(String key) {
+        if (TextUtils.isEmpty(key)) {
+            return null;
+        }
+        return mCacheMap.get(key);
+    }
+
+    public synchronized static boolean isExistInCache(String key) {
+        return getDownloadJobFromCache(key) != null;
     }
 }

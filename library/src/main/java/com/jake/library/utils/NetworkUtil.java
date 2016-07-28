@@ -23,6 +23,10 @@ public class NetworkUtil {
                 && url.substring(0, 8).equalsIgnoreCase("https://");
     }
 
+    public static boolean isWebUrl(String url) {
+        return isHttpsUrl(url) || isHttpUrl(url);
+    }
+
     /**
      * 描述:网络类型
      *
@@ -43,6 +47,7 @@ public class NetworkUtil {
 
         public static final String NET_CMWAP = "cmwap";
     }
+
     /**
      * 当前是否有可用网络
      *
@@ -51,7 +56,8 @@ public class NetworkUtil {
      */
     public static boolean isNetworkAvailable(Context context) {
         // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager == null) {
             return false;
         } else {

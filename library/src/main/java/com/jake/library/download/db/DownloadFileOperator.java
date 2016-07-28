@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.jake.library.BaseApplication;
 import com.jake.library.db.BaseDbOperator;
 
 import java.util.List;
@@ -16,6 +17,15 @@ import java.util.List;
  * @since 2016/7/22
  */
 public class DownloadFileOperator extends BaseDbOperator<DownloadFileTable> {
+    private static DownloadFileOperator mInstance;
+
+    public static DownloadFileOperator getInstance() {
+        if (mInstance == null) {
+            mInstance = new DownloadFileOperator(BaseApplication.getInstance().getContext());
+        }
+        return mInstance;
+    }
+
     public DownloadFileOperator(Context context) {
         super(context);
     }

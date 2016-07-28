@@ -8,7 +8,6 @@ package com.jake.library.download;
  * @since 2016/7/21
  */
 public interface IDownloadListener {
-    void onStart(String url);
 
     void onSuccess(String url, String filePath);
 
