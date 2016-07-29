@@ -15,15 +15,7 @@ import java.util.List;
  */
 public abstract class BaseDbOperator<TableEntity> {
 
-    private Context mContext;
 
-    public BaseDbOperator(Context context) {
-        mContext = context;
-    }
-
-    public Context getContext() {
-        return mContext;
-    }
 
     /**
      * 获取可读数据库

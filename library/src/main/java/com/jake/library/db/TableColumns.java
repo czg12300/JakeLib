@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
  * @author jakechen
  * @since 2016/7/21
  */
-public interface TableColumns extends BaseColumns {
+public interface TableColumns {
     /**
      * 创建时间
      */
@@ -19,6 +19,5 @@ public interface TableColumns extends BaseColumns {
      * 修改时间
      */
     public static final String MODIFIED_AT = "modified_at";
-
 
 }

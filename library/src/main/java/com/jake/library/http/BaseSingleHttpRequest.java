@@ -29,8 +29,6 @@ public abstract class BaseSingleHttpRequest {
 
     private static final String TAG_RESPONSE = "response_general";
 
-    private OkHttpClient mClient;
-
     private String mUrl;
 
     private boolean mIsPost = false;
@@ -45,7 +43,6 @@ public abstract class BaseSingleHttpRequest {
             boolean isPost) {
         mUrl = url;
         mIsPost = isPost;
-        mClient = new OkHttpClient();
         mResponseClass = responseClass;
         setupPublicParams(mParams);
     }
@@ -130,7 +127,8 @@ public abstract class BaseSingleHttpRequest {
             } else {
                 appendGetParams(reqBuilder);
             }
-            Response response = mClient.newCall(reqBuilder.build()).execute();
+            Response response = OkHttpClientManager.getInstance().getOkHttpClient()
+                    .newCall(reqBuilder.build()).execute();
             if (response.isSuccessful() && !mIsCancel) {
                 IJsonParse baseResponse = mResponseClass.newInstance();
                 String result = response.body().string();

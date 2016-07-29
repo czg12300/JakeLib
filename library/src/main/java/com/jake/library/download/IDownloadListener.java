@@ -13,5 +13,5 @@ public interface IDownloadListener {
 
     void onFail(String url);
 
-    void onProgress(String url, int positionSize, int totalSize);
+    void onProgress(String url, long positionSize, long totalSize);
 }

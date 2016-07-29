@@ -35,7 +35,6 @@ public abstract class BaseMultiHttpRequest {
 
     private static final String TAG_RESPONSE = "response_general";
 
-    private OkHttpClient mClient;
 
     private boolean mIsPost = false;
 
@@ -49,7 +48,6 @@ public abstract class BaseMultiHttpRequest {
 
     public BaseMultiHttpRequest(boolean isPost) {
         mIsPost = isPost;
-        mClient = new OkHttpClient();
     }
 
     private void appendGetParams(Request.Builder reqBuilder) throws UnsupportedEncodingException {
@@ -156,7 +154,7 @@ public abstract class BaseMultiHttpRequest {
                 appendGetParams(reqBuilder);
             }
             if (callback != null) {
-                mClient.newCall(reqBuilder.build()).enqueue(new Callback() {
+                OkHttpClientManager.getInstance().getOkHttpClient().newCall(reqBuilder.build()).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         callback.onFailure(handleHttpOnFailure(e));
