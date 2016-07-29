@@ -52,8 +52,7 @@ public class DownloadPartOperator extends BaseDbOperator<DownloadPart> {
 
     @Override
     public long update(ContentValues cv, String selection, String[] selectionArgs) {
-        return getWritableDatabase().update(DownloadPart.TABLE_NAME, cv, selection,
-                selectionArgs);
+        return getWritableDatabase().update(DownloadPart.TABLE_NAME, cv, selection, selectionArgs);
     }
 
     @Override
@@ -63,10 +62,12 @@ public class DownloadPartOperator extends BaseDbOperator<DownloadPart> {
 
     @Override
     public List<DownloadPart> query(String selection, String[] selectionArgs, String orderby) {
+        List<DownloadPart> result = null;
         Cursor c = null;
         try {
-            c = getReadableDatabase().query(DownloadPart.TABLE_NAME, null, selection,
-                    selectionArgs, null, null, orderby);
+            c = getReadableDatabase().query(DownloadPart.TABLE_NAME, null, selection, selectionArgs,
+                    null, null, orderby);
+            result = getDownloadPartFromCursor(c);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,23 +76,25 @@ public class DownloadPartOperator extends BaseDbOperator<DownloadPart> {
                 c = null;
             }
         }
-        return getDownloadPartFromCursor(c);
+        return result;
     }
 
     @Override
     public List<DownloadPart> query(String selection, String[] selectionArgs, String orderby,
-                                    int limit) {
+            int limit) {
+        List<DownloadPart> result = null;
         Cursor c = null;
         try {
-            c = getReadableDatabase().query(DownloadPart.TABLE_NAME, null, selection,
-                    selectionArgs, null, null, orderby, String.valueOf(limit));
+            c = getReadableDatabase().query(DownloadPart.TABLE_NAME, null, selection, selectionArgs,
+                    null, null, orderby, String.valueOf(limit));
+            result = getDownloadPartFromCursor(c);
         } catch (Exception e) {
             if (c != null) {
                 c.close();
                 c = null;
             }
         }
-        return getDownloadPartFromCursor(c);
+        return result;
     }
 
     @Override
@@ -115,8 +118,7 @@ public class DownloadPartOperator extends BaseDbOperator<DownloadPart> {
                 file.path = c.getString(c.getColumnIndexOrThrow(DownloadPart.PATH));
                 file.rangeStart = c.getInt(c.getColumnIndexOrThrow(DownloadPart.RANGE_START));
                 file.rangeEnd = c.getInt(c.getColumnIndexOrThrow(DownloadPart.RANGE_END));
-                file.positionSize = c
-                        .getInt(c.getColumnIndexOrThrow(DownloadPart.POSITION_SIZE));
+                file.positionSize = c.getInt(c.getColumnIndexOrThrow(DownloadPart.POSITION_SIZE));
                 file.totalSize = c.getInt(c.getColumnIndexOrThrow(DownloadPart.TOTAL_SIZE));
                 file.state = c.getInt(c.getColumnIndexOrThrow(DownloadPart.STATE));
                 file.createAt = c.getLong(c.getColumnIndexOrThrow(DownloadPart.CREATE_AT));

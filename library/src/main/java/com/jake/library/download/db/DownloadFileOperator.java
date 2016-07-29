@@ -52,8 +52,7 @@ public class DownloadFileOperator extends BaseDbOperator<DownloadFile> {
 
     @Override
     public long update(ContentValues cv, String selection, String[] selectionArgs) {
-        return getWritableDatabase().update(DownloadFile.TABLE_NAME, cv, selection,
-                selectionArgs);
+        return getWritableDatabase().update(DownloadFile.TABLE_NAME, cv, selection, selectionArgs);
     }
 
     @Override
@@ -63,10 +62,12 @@ public class DownloadFileOperator extends BaseDbOperator<DownloadFile> {
 
     @Override
     public List<DownloadFile> query(String selection, String[] selectionArgs, String orderby) {
+        List<DownloadFile> result = null;
         Cursor c = null;
         try {
-            c = getReadableDatabase().query(DownloadFile.TABLE_NAME, null, selection,
-                    selectionArgs, null, null, orderby);
+            c = getReadableDatabase().query(DownloadFile.TABLE_NAME, null, selection, selectionArgs,
+                    null, null, orderby);
+            result = getDownloadFileFromCursor(c);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,23 +76,25 @@ public class DownloadFileOperator extends BaseDbOperator<DownloadFile> {
                 c = null;
             }
         }
-        return getDownloadFileFromCursor(c);
+        return result;
     }
 
     @Override
     public List<DownloadFile> query(String selection, String[] selectionArgs, String orderby,
-                                    int limit) {
+            int limit) {
+        List<DownloadFile> result = null;
         Cursor c = null;
         try {
-            c = getReadableDatabase().query(DownloadFile.TABLE_NAME, null, selection,
-                    selectionArgs, null, null, orderby, String.valueOf(limit));
+            c = getReadableDatabase().query(DownloadFile.TABLE_NAME, null, selection, selectionArgs,
+                    null, null, orderby, String.valueOf(limit));
+            result = getDownloadFileFromCursor(c);
         } catch (Exception e) {
             if (c != null) {
                 c.close();
                 c = null;
             }
         }
-        return getDownloadFileFromCursor(c);
+        return result;
     }
 
     @Override
@@ -112,11 +115,10 @@ public class DownloadFileOperator extends BaseDbOperator<DownloadFile> {
                 file.id = c.getString(c.getColumnIndexOrThrow(DownloadFile.ID));
                 file.url = c.getString(c.getColumnIndexOrThrow(DownloadFile.URL));
                 file.partCount = c.getInt(c.getColumnIndexOrThrow(DownloadFile.PART_COUNT));
-                file.partIds = file.json2ParIds(
-                        c.getString(c.getColumnIndexOrThrow(DownloadFile.PART_IDS)));
+                file.partIds = file
+                        .json2ParIds(c.getString(c.getColumnIndexOrThrow(DownloadFile.PART_IDS)));
                 file.path = c.getString(c.getColumnIndexOrThrow(DownloadFile.PATH));
-                file.positionSize = c
-                        .getInt(c.getColumnIndexOrThrow(DownloadFile.POSITION_SIZE));
+                file.positionSize = c.getInt(c.getColumnIndexOrThrow(DownloadFile.POSITION_SIZE));
                 file.totalSize = c.getInt(c.getColumnIndexOrThrow(DownloadFile.TOTAL_SIZE));
                 file.state = c.getInt(c.getColumnIndexOrThrow(DownloadFile.STATE));
                 file.createAt = c.getLong(c.getColumnIndexOrThrow(DownloadFile.CREATE_AT));
