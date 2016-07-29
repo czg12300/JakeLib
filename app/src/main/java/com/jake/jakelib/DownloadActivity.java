@@ -62,7 +62,7 @@ public class DownloadActivity extends BaseActivity {
                 ((Button) view).setText("暂停");
             } else {
                 ((Button) view).setText("下载中");
-                DownloadManager.restart(url);
+                DownloadManager.download(url);
                 view.setTag(url);
             }
         }

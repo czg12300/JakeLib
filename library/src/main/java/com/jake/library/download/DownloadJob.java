@@ -69,12 +69,15 @@ public class DownloadJob
         } else {
             startNewPartTask();
         }
+        mDownloadFile.state = DownloadState.START;
+        DownloadFileOperator.getInstance().update(mKey, mDownloadFile);
         while (!isFinish) {
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            mDownloadFile.state = DownloadState.DOWNLOADING;
             DownloadFileOperator.getInstance().update(mKey, mDownloadFile);
             mHandler.sendEmptyMessage(MSG_PROGRESS);
         }
@@ -197,7 +200,7 @@ public class DownloadJob
     public synchronized void downloadChange(DownloadPart part) {
         mDownloadFile.positionSize += part.positionSize;
         if (mDownloadFile.positionSize >= mDownloadFile.totalSize) {
-            isFinish=true;
+            isFinish = true;
             mDownloadFile.state = DownloadState.FINISH;
             DownloadFileOperator.getInstance().update(mKey, mDownloadFile);
             DownloadManager.removeDownloadJobFromCache(mKey);
