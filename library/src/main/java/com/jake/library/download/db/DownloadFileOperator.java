@@ -47,17 +47,31 @@ public class DownloadFileOperator extends BaseDbOperator<DownloadFile> {
         cv.put(DownloadFile.MODIFIED_AT, createAt);
         downloadFile.createAt = createAt;
         downloadFile.modifyAt = createAt;
-        return getWritableDatabase().insert(DownloadFile.TABLE_NAME, null, cv);
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        long result = getWritableDatabase().insert(DownloadFile.TABLE_NAME, null, cv);
+        db.endTransaction();
+        return result;
     }
 
     @Override
     public long update(ContentValues cv, String selection, String[] selectionArgs) {
-        return getWritableDatabase().update(DownloadFile.TABLE_NAME, cv, selection, selectionArgs);
+        long result = 0;
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        result = getWritableDatabase().update(DownloadFile.TABLE_NAME, cv, selection,
+                selectionArgs);
+        db.endTransaction();
+        return result;
     }
 
     @Override
     public long delete(String selection, String[] selectionArgs) {
-        return getWritableDatabase().delete(DownloadFile.TABLE_NAME, selection, selectionArgs);
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        long result = db.delete(DownloadFile.TABLE_NAME, selection, selectionArgs);
+        db.endTransaction();
+        return result;
     }
 
     @Override

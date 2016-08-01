@@ -24,8 +24,6 @@ public class DownloadManager {
     private static String mDownloadDir = BaseApplication.getInstance().getCacheDir()
             .getAbsolutePath();
 
-    private OkHttpClient mOkHttpClient;
-
     public static void setDownloadDir(String absolutePath) {
         mDownloadDir = absolutePath;
     }
@@ -37,34 +35,23 @@ public class DownloadManager {
     public static void download(String url) {
         final String key = getKey(url);
         if (isExistInCache(key)) {
+            DownloadJob job = mCacheMap.get(key);
+            job.restart();
             return;
         }
-        // if (isAlreadyDownloadedInSdcard(url)) {
-        // return;
-        // }
-        DownloadFile table = DownloadFileOperator.getInstance().query(key);
-        if (table != null) {
-            if (table.isFinish()) {
-                if (TextUtils.isEmpty(table.path)) {
-                    File file = new File(table.path);
-                    if (file.exists() && file.isFile()) {
-                        success(url, file.getPath());
-                        return;
-                    }
-                } else {
-                    startDownload(key, url);
-                }
-            } else {
-                startDownload(key, url);
-            }
-        } else {
-            startDownload(key, url);
-        }
-
+        DownloadJob job = new DownloadJob(url);
+        DownloadExecutor.execute(job);
+        addDownloadJobToCache(key, job);
     }
 
-    private static void startDownload(String key, String url) {
-        DownloadJob job = new DownloadJob(url);
+    public static void reDownload(String url) {
+        final String key = getKey(url);
+        if (isExistInCache(key)) {
+            DownloadJob job = mCacheMap.get(key);
+            job.pause();
+            removeDownloadJobFromCache(key);
+        }
+        DownloadJob job = new DownloadJob(url, true);
         DownloadExecutor.execute(job);
         addDownloadJobToCache(key, job);
     }
@@ -78,36 +65,6 @@ public class DownloadManager {
     // }
     // return false;
     // }
-
-    public synchronized static void fail(String url) {
-        if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
-            for (IDownloadListener listener : mDownloadListeners) {
-                if (listener != null) {
-                    listener.onFail(url);
-                }
-            }
-        }
-    }
-
-    public synchronized static void progress(String url, long positionSize, long totalSize) {
-        if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
-            for (IDownloadListener listener : mDownloadListeners) {
-                if (listener != null) {
-                    listener.onProgress(url, positionSize, totalSize);
-                }
-            }
-        }
-    }
-
-    public synchronized static void success(String url, String path) {
-        if (mDownloadListeners != null && mDownloadListeners.size() > 0) {
-            for (IDownloadListener listener : mDownloadListeners) {
-                if (listener != null) {
-                    listener.onSuccess(url, path);
-                }
-            }
-        }
-    }
 
     public synchronized static String formatFileName(String url) {
         if (url != null && url.contains("/")) {
@@ -128,7 +85,7 @@ public class DownloadManager {
 
     public static void pause(String url) {
         final String key = getKey(url);
-        if (mCacheMap != null && mCacheMap.contains(key)) {
+        if (isExistInCache(key)) {
             DownloadJob job = mCacheMap.get(key);
             job.pause();
         }
@@ -136,14 +93,8 @@ public class DownloadManager {
 
     public static void restart(String url) {
         final String key = getKey(url);
-        if (mCacheMap != null) {
-            DownloadJob job = mCacheMap.get(key);
-            if (job != null) {
-                job.restart();
-            } else {
-                removeDownloadJobFromCache(key);
-                download(url);
-            }
+        if (isExistInCache(key)) {
+            getDownloadJobFromCache(key).restart();
         } else {
             download(url);
         }

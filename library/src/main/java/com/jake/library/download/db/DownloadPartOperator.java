@@ -47,17 +47,30 @@ public class DownloadPartOperator extends BaseDbOperator<DownloadPart> {
         cv.put(DownloadPart.MODIFIED_AT, createAt);
         downloadPart.createAt = createAt;
         downloadPart.modifyAt = createAt;
-        return getWritableDatabase().insert(DownloadPart.TABLE_NAME, null, cv);
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        long result = getWritableDatabase().insert(DownloadPart.TABLE_NAME, null, cv);
+        db.endTransaction();
+        return result;
     }
 
     @Override
     public long update(ContentValues cv, String selection, String[] selectionArgs) {
-        return getWritableDatabase().update(DownloadPart.TABLE_NAME, cv, selection, selectionArgs);
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        long result = getWritableDatabase().update(DownloadPart.TABLE_NAME, cv, selection,
+                selectionArgs);
+        db.endTransaction();
+        return result;
     }
 
     @Override
     public long delete(String selection, String[] selectionArgs) {
-        return getWritableDatabase().delete(DownloadPart.TABLE_NAME, selection, selectionArgs);
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        long result = db.delete(DownloadPart.TABLE_NAME, selection, selectionArgs);
+        db.endTransaction();
+        return result;
     }
 
     @Override
@@ -186,6 +199,14 @@ public class DownloadPartOperator extends BaseDbOperator<DownloadPart> {
         String selection = DownloadPart.ID + " = ? ";
         String[] selectionArgs = {
                 key
+        };
+        return delete(selection, selectionArgs);
+    }
+
+    public long deleteAllPart(String fileKey) {
+        String selection = DownloadPart.FILE_ID + " = ? ";
+        String[] selectionArgs = {
+                fileKey
         };
         return delete(selection, selectionArgs);
     }

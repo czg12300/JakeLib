@@ -36,6 +36,8 @@ public class DownloadJob
 
     private static final int MSG_PROGRESS = 0x003;
 
+    private static final int MSG_PAUSE = 0x004;
+
     private DownloadFile mDownloadFile;
 
     private Handler mHandler;
@@ -44,12 +46,21 @@ public class DownloadJob
 
     private String mKey;
 
-    private boolean isFinish = false;
+    // 用于判断当前下载状态
+    private boolean mIsFinish = false;
+
+    // 用于判断是否是重新下载
+    private boolean mIsReDownload = false;
 
     private ArrayList<DownloadPartTask> mTaskList;
 
     public DownloadJob(String url) {
+        this(url, false);
+    }
+
+    public DownloadJob(String url, boolean isReDownload) {
         this.mUrl = url;
+        this.mIsReDownload = isReDownload;
         mKey = DownloadManager.getKey(mUrl);
         mTaskList = new ArrayList<>();
         mHandler = new Handler(Looper.getMainLooper(), this);
@@ -59,19 +70,31 @@ public class DownloadJob
     public void run() {
         mDownloadFile = DownloadFileOperator.getInstance().query(mKey);
         if (mDownloadFile != null) {
-            if (mDownloadFile.partIds != null && mDownloadFile.partIds.length > 0) {
-                for (int i = 0; i < mDownloadFile.partIds.length; i++) {
-                    startPartTask(mDownloadFile.partIds[i]);
-                }
+            if (mIsReDownload) {
+                startReDownload();
             } else {
-                startNewPartTask();
+                if (mDownloadFile.isFinish() && !TextUtils.isEmpty(mDownloadFile.path)) {
+                    File file = new File(mDownloadFile.path);
+                    if (file.exists() && file.isFile()) {
+                        finished();
+                        sendFinishMsg();
+                        return;
+                    }
+                } else {
+                    if (mDownloadFile.partIds != null && mDownloadFile.partIds.length > 0) {
+                        startOldPartTask();
+                    } else {
+                        startNewPartTask();
+                    }
+                }
             }
+
         } else {
             startNewPartTask();
         }
         mDownloadFile.state = DownloadState.START;
         DownloadFileOperator.getInstance().update(mKey, mDownloadFile);
-        while (!isFinish) {
+        while (!mIsFinish) {
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
@@ -84,18 +107,56 @@ public class DownloadJob
 
     }
 
+    private void startReDownload() {
+        DownloadFileOperator.getInstance().delete(mKey);
+        DownloadPartOperator.getInstance().deleteAllPart(mKey);
+        startNewPartTask();
+    }
+
+    // 设置完成状态
+    private void finished() {
+        mIsFinish = true;
+    }
+
+    private void unfinished() {
+        mIsFinish = false;
+    }
+
+    private void startOldPartTask() {
+        boolean isAllPartReady = true;
+        ArrayList<DownloadPart> partList = new ArrayList<>();
+        for (int i = 0; i < mDownloadFile.partIds.length; i++) {
+            final String partId = mDownloadFile.partIds[i];
+            if (!TextUtils.isEmpty(partId)) {
+                DownloadPart part = DownloadPartOperator.getInstance().query(partId);
+                if (part != null) {
+                    partList.add(part);
+                } else {
+                    isAllPartReady = false;
+                    break;
+                }
+            }
+        }
+        if (isAllPartReady) {
+            for (DownloadPart part : partList) {
+                if (!part.isFinish()) {
+                    startPartTask(part);
+                }
+            }
+        } else {
+            mIsReDownload = true;
+            startReDownload();
+        }
+    }
+
     private void startNewPartTask() {
         long totalSize = getFileSizeByUrl(true);
-        mDownloadFile = new DownloadFile();
-        mDownloadFile.id = mKey;
-        mDownloadFile.path = DownloadManager.getDownloadDir() + File.separator
+        String downloadPath = DownloadManager.getDownloadDir() + File.separator
                 + DownloadManager.formatFileName(mUrl);
-        mDownloadFile.url = mUrl;
-        mDownloadFile.positionSize = 0;
-        mDownloadFile.state = DownloadState.START;
-        mDownloadFile.totalSize = totalSize;
-        // 统一创建下载文件
-        FileUtil.createFile(mDownloadFile.path, true);
+        if (totalSize > 0) {
+            // 统一创建下载文件
+            FileUtil.createFile(downloadPath, true);
+        }
         int partCount = getPartCount(totalSize);
         int temp = (int) (totalSize / partCount);
         String[] partIds = new String[partCount];
@@ -109,24 +170,45 @@ public class DownloadJob
             }
             final String partId = mKey + i;
             partIds[i] = partId;
-            DownloadPart part = new DownloadPart();
-            part.id = partId;
-            part.rangeStart = rangeStart;
-            part.rangeEnd = rangeEnd;
-            part.fileId = mDownloadFile.id;
-            part.path = mDownloadFile.path;
-            part.positionSize = 0;
-            part.totalSize = rangeEnd - rangeStart;
-            part.state = mDownloadFile.state;
-            part.url = mDownloadFile.url;
+            DownloadPart part = createNewDownloadPart(downloadPath, rangeStart, rangeEnd, partId);
             // 插入数据库
             DownloadPartOperator.getInstance().insert(part);
             startPartTask(part);
         }
+        // 创建当前下载的文件
+        createDownloadFile(downloadPath, totalSize, partCount, partIds);
+    }
+
+    private void createDownloadFile(String path, long totalSize, int partCount, String[] partIds) {
+        mDownloadFile = new DownloadFile();
+        mDownloadFile.id = mKey;
+        mDownloadFile.path = path;
+        mDownloadFile.url = mUrl;
+        mDownloadFile.positionSize = 0;
+        mDownloadFile.state = DownloadState.START;
+        mDownloadFile.totalSize = totalSize;
         mDownloadFile.partIds = partIds;
         mDownloadFile.partCount = partCount;
         // 插入数据库
+        if (mIsReDownload) {
+            DownloadFileOperator.getInstance().delete(mKey);
+        }
         DownloadFileOperator.getInstance().insert(mDownloadFile);
+    }
+
+    private DownloadPart createNewDownloadPart(String path, long rangeStart, long rangeEnd,
+            String partId) {
+        DownloadPart part = new DownloadPart();
+        part.id = partId;
+        part.rangeStart = rangeStart;
+        part.rangeEnd = rangeEnd;
+        part.fileId = mKey;
+        part.path = path;
+        part.positionSize = 0;
+        part.totalSize = rangeEnd - rangeStart;
+        part.state = DownloadState.START;
+        part.url = mUrl;
+        return part;
     }
 
     private int getPartCount(long totalSize) {
@@ -163,22 +245,14 @@ public class DownloadJob
         return totalSize > 0 ? totalSize : 0;
     }
 
-    private void startPartTask(String partId) {
-        if (!TextUtils.isEmpty(partId)) {
-            DownloadPart part = DownloadPartOperator.getInstance().query(partId);
-            if (part != null) {
-                startPartTask(part);
-            }
-        }
-    }
-
     private void startPartTask(DownloadPart part) {
         DownloadPartTask task = new DownloadPartTask(part, this);
-        DownloadExecutor.submit(task);
         mTaskList.add(task);
+        DownloadExecutor.submit(task);
     }
 
     public void pause() {
+        finished();
         if (mTaskList != null && mTaskList.size() > 0) {
             for (DownloadPartTask task : mTaskList) {
                 task.pause();
@@ -186,11 +260,15 @@ public class DownloadJob
             mDownloadFile.state = DownloadState.PAUSE;
             DownloadFileOperator.getInstance().update(mKey, mDownloadFile);
         }
+        mHandler.sendEmptyMessage(MSG_PAUSE);
     }
 
     public void restart() {
+        unfinished();
         if (mTaskList != null && mTaskList.size() > 0) {
             for (DownloadPartTask task : mTaskList) {
+                task.pause();
+                task.setIsPause(false);
                 DownloadExecutor.submit(task);
             }
         }
@@ -200,17 +278,21 @@ public class DownloadJob
     public synchronized void downloadChange(DownloadPart part) {
         mDownloadFile.positionSize += part.positionSize;
         if (mDownloadFile.positionSize >= mDownloadFile.totalSize) {
-            isFinish = true;
+            finished();
             mDownloadFile.state = DownloadState.FINISH;
             DownloadFileOperator.getInstance().update(mKey, mDownloadFile);
-            DownloadManager.removeDownloadJobFromCache(mKey);
-            mHandler.sendEmptyMessage(MSG_SUCCESS);
+            sendFinishMsg();
         }
+    }
+
+    private void sendFinishMsg() {
+        DownloadManager.removeDownloadJobFromCache(mKey);
+        mHandler.sendEmptyMessage(MSG_SUCCESS);
     }
 
     @Override
     public synchronized void fail(DownloadPart part) {
-        isFinish = true;
+        finished();
         pause();
         DownloadManager.removeDownloadJobFromCache(mKey);
         mHandler.sendEmptyMessage(MSG_FAIL);
@@ -220,15 +302,63 @@ public class DownloadJob
     public boolean handleMessage(Message message) {
         switch (message.what) {
             case MSG_FAIL:
-                DownloadManager.fail(mUrl);
+                onFail(mUrl);
                 break;
             case MSG_SUCCESS:
-                DownloadManager.success(mUrl, mDownloadFile.path);
+                onSuccess(mUrl, mDownloadFile.path);
                 break;
             case MSG_PROGRESS:
-                DownloadManager.progress(mUrl, mDownloadFile.positionSize, mDownloadFile.totalSize);
+                onProgress(mUrl, mDownloadFile.positionSize, mDownloadFile.totalSize);
+                break;
+            case MSG_PAUSE:
+                onPause(mUrl);
                 break;
         }
         return true;
     }
+
+    public void onFail(String url) {
+        ArrayList<IDownloadListener> list = DownloadManager.getAllDownloadListener();
+        if (list != null && list.size() > 0) {
+            for (IDownloadListener listener : list) {
+                if (listener != null) {
+                    listener.onFail(url);
+                }
+            }
+        }
+    }
+
+    public void onProgress(String url, long positionSize, long totalSize) {
+        ArrayList<IDownloadListener> list = DownloadManager.getAllDownloadListener();
+        if (list != null && list.size() > 0) {
+            for (IDownloadListener listener : list) {
+                if (listener != null) {
+                    listener.onProgress(url, positionSize, totalSize);
+                }
+            }
+        }
+    }
+
+    public void onSuccess(String url, String path) {
+        ArrayList<IDownloadListener> list = DownloadManager.getAllDownloadListener();
+        if (list != null && list.size() > 0) {
+            for (IDownloadListener listener : list) {
+                if (listener != null) {
+                    listener.onSuccess(url, path);
+                }
+            }
+        }
+    }
+
+    public void onPause(String url) {
+        ArrayList<IDownloadListener> list = DownloadManager.getAllDownloadListener();
+        if (list != null && list.size() > 0) {
+            for (IDownloadListener listener : list) {
+                if (listener != null) {
+                    listener.onPause(url);
+                }
+            }
+        }
+    }
+
 }

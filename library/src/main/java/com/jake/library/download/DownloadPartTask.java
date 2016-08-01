@@ -5,6 +5,7 @@ import com.jake.library.download.db.DownloadPart;
 import com.jake.library.download.db.DownloadPartOperator;
 import com.jake.library.download.db.DownloadState;
 import com.jake.library.http.OkHttpClientManager;
+import com.jake.library.utils.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class DownloadPartTask implements Runnable {
 
     private IDownloadPartListener mIDownloadPartListener;
 
-    private boolean isPause = false;
+    private boolean mIsPause = false;
 
     public DownloadPartTask(DownloadPart part, IDownloadPartListener listener) {
         mDownloadPart = part;
@@ -62,7 +63,7 @@ public class DownloadPartTask implements Runnable {
                 int buffOffset = 0;
                 final long updateSize = mDownloadPart.totalSize / 20;
                 // 开始下载数据库中插入下载信息
-                while ((length = bis.read(buffer)) > 0 && !isPause) {
+                while (!mIsPause && (length = bis.read(buffer)) > 0) {
                     accessFile.write(buffer, 0, length);
                     mDownloadPart.positionSize += length;
                     buffOffset += length;
@@ -76,10 +77,12 @@ public class DownloadPartTask implements Runnable {
                         }
                     }
                 }
-                mDownloadPart.state = DownloadState.FINISH;
-                DownloadPartOperator.getInstance().update(mDownloadPart.id, mDownloadPart);
-                if (mIDownloadPartListener != null) {
-                    mIDownloadPartListener.downloadChange(mDownloadPart);
+                if (!mIsPause) {
+                    mDownloadPart.state = DownloadState.FINISH;
+                    DownloadPartOperator.getInstance().update(mDownloadPart.id, mDownloadPart);
+                    if (mIDownloadPartListener != null) {
+                        mIDownloadPartListener.downloadChange(mDownloadPart);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -102,9 +105,17 @@ public class DownloadPartTask implements Runnable {
     }
 
     public void pause() {
+        mIsPause = true;
         mDownloadPart.state = DownloadState.PAUSE;
         DownloadPartOperator.getInstance().update(mDownloadPart.id, mDownloadPart);
+    }
 
+    public boolean isPause() {
+        return mIsPause;
+    }
+
+    public void setIsPause(boolean isPause) {
+        mIsPause = isPause;
     }
 
     public static interface IDownloadPartListener {

@@ -22,6 +22,10 @@ public class SDCardUtil {
     private SDCardUtil() {
     }
 
+    public static String getSdCardRootDir() {
+        return Environment.getExternalStorageDirectory().getAbsolutePath();
+    }
+
     /**
      * 判断是否存在SDCard
      * 

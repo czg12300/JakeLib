@@ -59,4 +59,8 @@ public class DownloadPart implements TableColumns {
     public long createAt;
 
     public long modifyAt;
+
+    public boolean isFinish() {
+        return state == DownloadState.FINISH;
+    }
 }
