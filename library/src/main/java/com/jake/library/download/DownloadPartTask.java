@@ -36,6 +36,8 @@ public class DownloadPartTask implements Runnable {
 
     @Override
     public void run() {
+        LogUtil.d("tag  DownloadPartTask   run() ");
+        mIsPause = false;
         InputStream inputStream = null;
         BufferedInputStream bis = null;
         try {
@@ -108,14 +110,6 @@ public class DownloadPartTask implements Runnable {
         mIsPause = true;
         mDownloadPart.state = DownloadState.PAUSE;
         DownloadPartOperator.getInstance().update(mDownloadPart.id, mDownloadPart);
-    }
-
-    public boolean isPause() {
-        return mIsPause;
-    }
-
-    public void setIsPause(boolean isPause) {
-        mIsPause = isPause;
     }
 
     public static interface IDownloadPartListener {

@@ -268,7 +268,6 @@ public class DownloadJob
         if (mTaskList != null && mTaskList.size() > 0) {
             for (DownloadPartTask task : mTaskList) {
                 task.pause();
-                task.setIsPause(false);
                 DownloadExecutor.submit(task);
             }
         }
