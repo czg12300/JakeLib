@@ -107,30 +107,3 @@ bintray {
     }
 }
 
-//ext {
-//    bintrayRepo = 'maven'
-//    bintrayName = 'jake-lib'
-//
-//    publishedGroupId = 'com.jake.library'
-//    libraryName = 'JakeLib'
-//    artifact = 'jake-lib'
-//
-//    libraryDescription = 'a android app framework library'
-//
-//    siteUrl = 'https://github.com/czg12300/JakeLib'
-//    gitUrl = 'https://github.com/czg12300/JakeLib.git'
-//
-//    libraryVersion = '0.0.1'
-//
-//    developerId = 'jakechen'
-//    developerName = 'Jake Chen'
-//    developerEmail = '903475400@qq.com'
-//
-//    licenseName = 'The Apache Software License, Version 2.0'
-//    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//    allLicenses = ["Apache-2.0"]
-//}
-//
-
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
