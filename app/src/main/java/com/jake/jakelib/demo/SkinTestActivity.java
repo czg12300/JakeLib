@@ -1,6 +1,8 @@
 
-package com.jake.jakelib;
+package com.jake.jakelib.demo;
 
+import com.jake.jakelib.MenuLeftFragment;
+import com.jake.jakelib.R;
 import com.jake.jakelib.skin.ViewHelper;
 import com.jake.library.ui.skin.BaseSkinActivity;
 import com.jake.library.ui.skin.ISkinChangingCallback;

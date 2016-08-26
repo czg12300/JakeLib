@@ -1,6 +1,7 @@
 
-package com.jake.jakelib;
+package com.jake.jakelib.demo;
 
+import com.jake.jakelib.R;
 import com.jake.jakelib.http.Cmd;
 import com.jake.jakelib.http.MyResponse;
 import com.jake.jakelib.http.MyResponse1;
@@ -12,6 +13,7 @@ import com.jake.library.ui.BaseActivity;
 import com.jake.library.utils.SDCardUtil;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
