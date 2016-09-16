@@ -21,9 +21,6 @@ public class BaseSwipeBackActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        SwipeBackHelper.onCreate(this);
-//        SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(true).setSwipeSensitivity(0.5f)
-//                .setSwipeRelateEnable(false);
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
         getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
@@ -33,21 +30,7 @@ public class BaseSwipeBackActivity extends BaseActivity {
         getSwipeBackLayout().setEdgeSize(width / 8);
     }
 
-//    public void setSwipeBackEnable(boolean enable) {
-//        SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(enable);
-//    }
-//
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//        SwipeBackHelper.onPostCreate(this);
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        SwipeBackHelper.onDestroy(this);
-//    }
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
