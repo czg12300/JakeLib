@@ -2,28 +2,17 @@
 package com.jake.jakelib.demo;
 
 import com.jake.jakelib.R;
-import com.jake.jakelib.http.Cmd;
-import com.jake.jakelib.http.MyResponse;
-import com.jake.jakelib.http.MyResponse1;
-import com.jake.jakelib.http.RequestTask;
-import com.jake.library.download.DownloadManager;
-import com.jake.library.download.IDownloadListener;
-import com.jake.library.http.IMultiHttpCallback;
+import com.jake.library.data.download.DownloadManager;
+import com.jake.library.data.download.IDownloadListener;
 import com.jake.library.ui.BaseActivity;
-import com.jake.library.utils.SDCardUtil;
+import com.jake.library.utils.SdCardUtil;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DownloadActivity extends BaseActivity implements View.OnClickListener {
     private TextView textView;
@@ -44,7 +33,7 @@ public class DownloadActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.pause).setOnClickListener(this);
         findViewById(R.id.restart).setOnClickListener(this);
         progressBar.setMax(100);
-        DownloadManager.setDownloadDir(SDCardUtil.getSdCardRootDir() + File.separator + "下载");
+        DownloadManager.setDownloadDir(SdCardUtil.getSdCardRootDir() + File.separator + "下载");
         DownloadManager.addDownloadListener(new IDownloadListener() {
             @Override
             public void onSuccess(String url, String filePath) {

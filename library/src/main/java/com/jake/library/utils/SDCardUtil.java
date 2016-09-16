@@ -12,14 +12,14 @@ import java.io.File;
  * @author chenys
  * @since 2013-7-11 下午4:25:27
  */
-public class SDCardUtil {
+public class SdCardUtil {
 
     /**
      * sdcard
      */
     public static final String SDCARD_FOLDER = Environment.getExternalStorageDirectory().toString();
 
-    private SDCardUtil() {
+    private SdCardUtil() {
     }
 
     public static String getSdCardRootDir() {

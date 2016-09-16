@@ -6,7 +6,7 @@ import com.jake.jakelib.http.Cmd;
 import com.jake.jakelib.http.MyResponse;
 import com.jake.jakelib.http.MyResponse1;
 import com.jake.jakelib.http.RequestTask;
-import com.jake.library.http.IMultiHttpCallback;
+import com.jake.library.data.http.IMultiHttpCallback;
 import com.jake.library.ui.BaseActivity;
 
 import android.content.Intent;

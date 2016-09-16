@@ -18,16 +18,20 @@ public class LogUtil {
 
     private static boolean isOpenLog = true; // true打开日志,false关闭日志
 
-    private static final String LOG_NAME = "jake";
+    private static String TAG = "jake";//tag的名称
+
+    public static void setLogTag(String tag) {
+        TAG = tag;
+    }
 
     public static void i(Object o) {
         if (!isOpenLog) {
             return;
         }
         if (null == o) {
-            Log.i(LOG_NAME, "Object is null");
+            Log.i(TAG, "Object is null");
         } else {
-            Log.i(LOG_NAME, o.toString());
+            Log.i(TAG, o.toString());
         }
     }
 
@@ -38,7 +42,7 @@ public class LogUtil {
         if (TextUtils.isEmpty(log)) {
             log = log + "";
         }
-        Log.i(LOG_NAME, log);
+        Log.i(TAG, log);
     }
 
     public static void i(String... strings) {
@@ -59,7 +63,7 @@ public class LogUtil {
                 log = strings[0];
             }
             if (!TextUtils.isEmpty(log)) {
-                Log.i(LOG_NAME, log);
+                Log.i(TAG, log);
             }
         }
     }
@@ -79,9 +83,9 @@ public class LogUtil {
             return;
         }
         if (null == o) {
-            Log.d(LOG_NAME, "Object is null");
+            Log.d(TAG, "Object is null");
         } else {
-            Log.d(LOG_NAME, o.toString());
+            Log.d(TAG, o.toString());
         }
     }
 
@@ -92,7 +96,7 @@ public class LogUtil {
         if (TextUtils.isEmpty(log)) {
             log = log + "";
         }
-        Log.d(LOG_NAME, log);
+        Log.d(TAG, log);
     }
 
     public static void d(String... strings) {
@@ -113,7 +117,7 @@ public class LogUtil {
                 log = strings[0];
             }
             if (!TextUtils.isEmpty(log)) {
-                Log.d(LOG_NAME, log);
+                Log.d(TAG, log);
             }
         }
     }
@@ -155,6 +159,6 @@ public class LogUtil {
         if (TextUtils.isEmpty(log)) {
             log = log + "";
         }
-        Log.w(LOG_NAME, log);
+        Log.w(TAG, log);
     }
 }

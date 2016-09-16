@@ -9,8 +9,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jake.library.BaseApplication;
 import com.jake.library.R;
+import com.jake.library.global.IController;
+import com.jake.library.global.LibraryController;
 
 /**
  * 描述：用于显示toast
@@ -34,7 +35,7 @@ public class ToastUtil {
             });
 
     public static void show(int stringId) {
-        show(BaseApplication.getInstance().getString(stringId));
+        show(LibraryController.getInstance().getContext().getString(stringId));
     }
 
     public static void show(String msg) {
@@ -50,7 +51,7 @@ public class ToastUtil {
 
     private static void showToast(String msg) {
         if (mToast == null) {
-            Context context = BaseApplication.getInstance().getContext();
+            Context context = LibraryController.getInstance().getContext();
             mToast = new Toast(context);
             mToast.setView(View.inflate(context, R.layout.toast_layout, null));
             mToast.setDuration(Toast.LENGTH_SHORT);

@@ -11,27 +11,37 @@ import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.util.Base64;
 
+import com.jake.library.global.LibraryController;
+
 import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Administrator on 2015/8/16.
  */
 public final class BitmapUtil {
-    public static Bitmap decodeResource(int drawableId) {
+    public static Bitmap decodeResource(Context context, int drawableId) {
         Bitmap bitmap = null;
         try {
-            bitmap = BitmapFactory.decodeResource(DisplayUtil.getResources(), drawableId);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), drawableId);
         } catch (OutOfMemoryError error) {
+            error.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         return bitmap;
     }
 
-    public static Bitmap decodeResource(int drawableId, int width, int height) {
-        return ThumbnailUtils.extractThumbnail(decodeResource(drawableId), width, height);
+    public static Bitmap decodeResource(int drawableId) {
+
+        return decodeResource(LibraryController.getInstance().getContext(), drawableId);
+    }
+
+    public static Bitmap decodeResource(Context context, int drawableId, int width, int height) {
+        return ThumbnailUtils.extractThumbnail(decodeResource(context, drawableId), width, height);
     }
 
     public static int computeInitialSampleSize(BitmapFactory.Options options, int minSideLength,
-            int maxNumOfPixels) {
+                                               int maxNumOfPixels) {
         double w = options.outWidth;
         double h = options.outHeight;
 
@@ -107,9 +117,6 @@ public final class BitmapUtil {
         return bitmap;
     }
 
-    public static Bitmap decodeResource(Context context, int resId) {
-        return BitmapFactory.decodeResource(context.getResources(), resId);
-    }
 
     public static long getCurrentTime() {
         return System.currentTimeMillis();

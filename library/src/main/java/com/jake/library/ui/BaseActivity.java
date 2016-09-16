@@ -10,5 +10,5 @@ import android.support.v7.app.AppCompatActivity;
  * @since 2016/7/15 13:53
  */
 
-public class BaseActivity extends AppCompatActivity implements IUi {
+public class BaseActivity extends AppCompatActivity {
 }

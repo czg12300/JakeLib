@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.jake.library.BaseApplication;
-
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,10 +47,10 @@ public class AppUtil {
      *
      * @return
      */
-    public static int getAppVersion() {
+    public static int getAppVersion(Context context) {
         try {
-            return BaseApplication.getInstance().getPackageManager()
-                    .getPackageInfo(BaseApplication.getInstance().getPackageName(), 0).versionCode;
+            return context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

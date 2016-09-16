@@ -20,9 +20,6 @@ public class ThemeUtil {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            }
             view.setPadding(0, getStatusBarHeight(context), 0, 0);
         }
     }
