@@ -5,6 +5,7 @@ import com.jake.jakelib.R;
 import com.jake.library.data.download.DownloadManager;
 import com.jake.library.data.download.IDownloadListener;
 import com.jake.library.ui.BaseActivity;
+import com.jake.library.ui.BaseSwipeBackActivity;
 import com.jake.library.utils.SdCardUtil;
 
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 import java.io.File;
 
-public class DownloadActivity extends BaseActivity implements View.OnClickListener {
+public class DownloadActivity extends BaseSwipeBackActivity implements View.OnClickListener {
     private TextView textView;
 
     ProgressBar progressBar;
