@@ -57,11 +57,4 @@ public class AppUtil {
         return 1;
     }
 
-    public static boolean isListAvailable(List<?> list) {
-        return list != null && list.size() > 0;
-    }
-
-    public static boolean isSameObject(Object obj1, Object obj2) {
-        return obj1 == obj2;
-    }
 }

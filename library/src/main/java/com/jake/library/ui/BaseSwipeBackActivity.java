@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.jake.library.global.BaseResourceController;
 import com.jake.library.ui.widget.swipeback.SwipeBackActivityHelper;
 import com.jake.library.ui.widget.swipeback.SwipeBackLayout;
 import com.jake.library.utils.ThemeUtil;
@@ -24,12 +25,8 @@ public class BaseSwipeBackActivity extends BaseActivity {
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
         getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int width = metric.widthPixels;
-        getSwipeBackLayout().setEdgeSize(width / 8);
+        getSwipeBackLayout().setEdgeSize(getResources().getDisplayMetrics().widthPixels / 8);
     }
-
 
 
     @Override
