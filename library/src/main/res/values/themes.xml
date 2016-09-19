@@ -1,0 +1,10 @@
+<resources>
+    <style name="NoTitleBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+    <style name="AppTheme" parent="NoTitleBar">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

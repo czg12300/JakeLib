@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.jake.library.ui.widget.irecyclerview.IRecyclerView
+        android:id="@+id/id_stickynavlayout_innerscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
+        app:refreshEnabled="true"
+        app:refreshHeaderLayout="@layout/irecyclerview_layout_refresh_header"
+        app:loadMoreEnabled="true"
+        app:loadMoreFooterLayout="@layout/irecyclerview_layout_load_more_footer" />
+
+    <View
+        android:id="@+id/v_shadow_top"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/img_shadow_top" />
+</RelativeLayout>

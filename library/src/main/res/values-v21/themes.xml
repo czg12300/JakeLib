@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="AppTheme" parent="NoTitleBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
+
+</resources>

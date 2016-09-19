@@ -69,4 +69,13 @@
         <attr name="kswTextOff" format="string"/>
         <attr name="kswTextMarginH" format="dimension"/>
     </declare-styleable>
+
+    <!-- IRecyclerView -->
+    <declare-styleable name="IRecyclerView">
+        <attr name="refreshHeaderLayout" format="reference" />
+        <attr name="loadMoreFooterLayout" format="reference" />
+        <attr name="refreshEnabled" format="boolean" />
+        <attr name="loadMoreEnabled" format="boolean" />
+        <attr name="refreshFinalMoveOffset" format="dimension" />
+    </declare-styleable>
 </resources>
