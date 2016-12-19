@@ -9,7 +9,7 @@ import android.content.Context;
  * @since 2016/9/16 11:45
  */
 
-public interface IController {
+public interface IAppController {
 
     void init(Context context);
 

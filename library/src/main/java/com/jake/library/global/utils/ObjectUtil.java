@@ -1,15 +1,7 @@
 
-package com.jake.library.utils;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+package com.jake.library.global.utils;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ObjectUtil {
 

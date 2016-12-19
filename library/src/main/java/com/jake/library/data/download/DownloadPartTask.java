@@ -5,7 +5,7 @@ import com.jake.library.data.download.db.DownloadPart;
 import com.jake.library.data.download.db.DownloadPartOperator;
 import com.jake.library.data.download.db.DownloadState;
 import com.jake.library.data.http.OkHttpClientManager;
-import com.jake.library.utils.LogUtil;
+import com.jake.library.global.utils.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

@@ -6,7 +6,7 @@ import android.support.design.widget.AppBarLayout;
 import android.util.Log;
 
 import com.jake.jakelib.R;
-import com.jake.library.ui.BaseActivity;
+import com.jake.library.ui.activity.BaseActivity;
 
 /**
  * 描述:

@@ -1,11 +1,11 @@
-package com.jake.library.ui;
+package com.jake.library.ui.adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jake.library.utils.ObjectUtil;
+import com.jake.library.global.utils.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;

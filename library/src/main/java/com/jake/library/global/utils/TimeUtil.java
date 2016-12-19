@@ -1,5 +1,5 @@
 
-package com.jake.library.utils;
+package com.jake.library.global.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

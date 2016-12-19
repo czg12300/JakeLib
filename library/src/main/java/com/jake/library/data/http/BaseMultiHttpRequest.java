@@ -4,9 +4,9 @@ package com.jake.library.data.http;
 import android.text.TextUtils;
 
 import com.jake.library.global.LibraryController;
-import com.jake.library.utils.LogUtil;
-import com.jake.library.utils.NetworkUtil;
-import com.jake.library.utils.UrlEncodeUtil;
+import com.jake.library.global.utils.LogUtil;
+import com.jake.library.global.utils.NetworkUtil;
+import com.jake.library.global.utils.UrlEncodeUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

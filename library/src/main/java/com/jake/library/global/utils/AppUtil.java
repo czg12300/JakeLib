@@ -1,5 +1,5 @@
 
-package com.jake.library.utils;
+package com.jake.library.global.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 

@@ -9,7 +9,7 @@ import android.content.Context;
  * @since 2016/9/16 13:15
  */
 
-public class LibraryController implements IController {
+public class LibraryController implements IAppController {
     private Context context;
 
 

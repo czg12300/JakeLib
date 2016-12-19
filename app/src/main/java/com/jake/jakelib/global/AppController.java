@@ -2,7 +2,7 @@ package com.jake.jakelib.global;
 
 import android.content.Context;
 
-import com.jake.library.global.IController;
+import com.jake.library.global.IAppController;
 import com.jake.library.global.LibraryController;
 
 /**
@@ -12,7 +12,7 @@ import com.jake.library.global.LibraryController;
  * @since 2016/9/16 13:06
  */
 
-public class AppController implements IController {
+public class AppController implements IAppController {
     private Context mContext;
 
     private AppController() {

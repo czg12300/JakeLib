@@ -1,9 +1,8 @@
 
-package com.jake.library.utils;
+package com.jake.library.global.utils;
 
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
-import android.view.View;
 import android.widget.TextView;
 
 /**

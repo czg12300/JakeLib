@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 
-import com.jake.library.utils.LogUtil;
+import com.jake.library.global.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

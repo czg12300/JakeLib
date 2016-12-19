@@ -1,5 +1,5 @@
 
-package com.jake.library.ui;
+package com.jake.library.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

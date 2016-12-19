@@ -13,9 +13,8 @@ import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.BaseAdapter;
 
-import com.jake.library.ui.BaseActivity;
+import com.jake.library.ui.activity.BaseActivity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

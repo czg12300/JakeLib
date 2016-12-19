@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jake.library.R;
+import com.jake.library.ui.adapter.BaseRecycleViewAdapter;
+import com.jake.library.ui.fragment.BaseFragment;
 import com.jake.library.ui.widget.BaseLoadStateLayoutView;
 import com.jake.library.ui.widget.irecyclerview.IRecyclerView;
 import com.jake.library.ui.widget.irecyclerview.LoadMoreFooterView;

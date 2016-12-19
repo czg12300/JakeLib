@@ -1,5 +1,5 @@
 
-package com.jake.library.utils;
+package com.jake.library.global.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

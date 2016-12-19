@@ -1,5 +1,5 @@
 
-package com.jake.library.utils;
+package com.jake.library.global.utils;
 
 import android.content.Context;
 import android.os.Handler;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.jake.library.R;
-import com.jake.library.global.IController;
 import com.jake.library.global.LibraryController;
 
 /**

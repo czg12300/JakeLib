@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
-import com.jake.library.utils.LogUtil;
+import com.jake.library.global.utils.LogUtil;
 
 /**
  * Created by zhy on 15/9/22.
