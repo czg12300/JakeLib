@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.jake.library.global.utils.ObjectUtil;
+import com.jake.library.utils.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;

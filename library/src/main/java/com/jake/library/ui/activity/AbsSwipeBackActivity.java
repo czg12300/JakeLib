@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
+import com.jake.library.R;
 import com.jake.library.ui.widget.swipeback.SwipeBackHelper;
-import com.jake.library.ui.widget.swipeback.SwipeBackLayout;
 import com.jake.library.ui.widget.swipeback.SwipeBackPage;
 
 import java.lang.ref.WeakReference;
@@ -23,16 +23,20 @@ public class AbsSwipeBackActivity extends AbsBroadcastActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SwipeBackPage.Builder builder = SwipeBackPage.Builder.create(this);
         builder.setSwipeBackEnable(true)
                 .setSwipeSensitivity(1f)
                 .setShowScrim(false)
-                .setEdgeTrackingEnabled(SwipeBackLayout.EDGE_TOP)
-                .setSwipeEdge(getResources().getDisplayMetrics().widthPixels )
+                .setSwipeEdge(getResources().getDisplayMetrics().widthPixels)
                 .setSwipeRelateOffset(getResources().getDisplayMetrics().widthPixels / 4)
                 .setSwipeRelateEnable(true);
         mSwipeBackPage = new WeakReference<>(builder.build());
         SwipeBackHelper.addActivity(getSwipeBackPage());
+        SwipeBackPage swipeBackPage = getSwipeBackPage();
+        if (swipeBackPage != null && swipeBackPage.isSwipeBackEnable()) {
+            overridePendingTransition(R.anim.swipe_back_activity_open, R.anim.swipe_back_activity_exit);
+        }
     }
 
     /**
@@ -70,13 +74,12 @@ public class AbsSwipeBackActivity extends AbsBroadcastActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (getSwipeBackPage() != null) {
-            getSwipeBackPage().scrollToFinishActivity();
-        } else {
-            super.onBackPressed();
+    public void finish() {
+        super.finish();
+        SwipeBackPage swipeBackPage = getSwipeBackPage();
+        if (swipeBackPage != null && swipeBackPage.isSwipeBackEnable()) {
+            overridePendingTransition(R.anim.swipe_back_activity_open, R.anim.swipe_back_activity_exit);
         }
-
     }
 
     @Override

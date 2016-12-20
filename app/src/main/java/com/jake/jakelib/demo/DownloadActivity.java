@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.jake.jakelib.R;
 import com.jake.library.data.download.DownloadManager;
 import com.jake.library.data.download.IDownloadListener;
-import com.jake.library.global.utils.SdCardUtil;
+import com.jake.library.utils.SdCardUtil;
 import com.jake.library.ui.activity.AbsSwipeBackActivity;
 
 import java.io.File;

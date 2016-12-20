@@ -16,6 +16,7 @@ public class SwipeBackPage implements SwipeBackLayout.SwipeListener {
 
     private SwipeBackLayout mSwipeBackLayout;
     private int offset = 500;
+    private boolean isSwipeBackEnable = true;
 
     private SwipeBackPage(Activity activity) {
         this.mActivity = activity;
@@ -48,31 +49,12 @@ public class SwipeBackPage implements SwipeBackLayout.SwipeListener {
     @Override
     public void onScroll(float percent, int px) {
         if (Build.VERSION.SDK_INT > 11) {
-            int edge = mSwipeBackLayout.getEdgeFlag();
             SwipeBackPage page = SwipeBackHelper.getPrePage(this);
             if (page != null) {
-                if (edge == SwipeBackLayout.EDGE_LEFT) {
-                    page.getSwipeBackLayout().setX(-offset * Math.max(1 - percent, 0));
-                    if (percent == 0) {
-                        page.getSwipeBackLayout().setX(0);
-                    }
-                } else if (edge == SwipeBackLayout.EDGE_RIGHT) {
-                    page.getSwipeBackLayout().setX(offset * Math.max(1 - percent, 0));
-                    if (percent == 0) {
-                        page.getSwipeBackLayout().setX(0);
-                    }
-                } else if (edge == SwipeBackLayout.EDGE_BOTTOM) {
-                    page.getSwipeBackLayout().setY(offset * Math.max(1 - percent, 0));
-                    if (percent == 0) {
-                        page.getSwipeBackLayout().setY(0);
-                    }
-                } else if (edge == SwipeBackLayout.EDGE_TOP) {
-                    page.getSwipeBackLayout().setY(-offset * Math.max(1 - percent, 0));
-                    if (percent == 0) {
-                        page.getSwipeBackLayout().setY(1);
-                    }
+                page.getSwipeBackLayout().setX(-offset * Math.max(1 - percent, 0));
+                if (percent == 0) {
+                    page.getSwipeBackLayout().setX(0);
                 }
-
             }
         }
     }
@@ -85,29 +67,25 @@ public class SwipeBackPage implements SwipeBackLayout.SwipeListener {
     @Override
     public void onScrollToClose() {
         if (Build.VERSION.SDK_INT > 11) {
-            int edge = mSwipeBackLayout.getEdgeFlag();
             SwipeBackPage page = SwipeBackHelper.getPrePage(this);
             if (page != null) {
-                if (edge == SwipeBackLayout.EDGE_LEFT) {
-                    page.getSwipeBackLayout().setX(0);
-                } else if (edge == SwipeBackLayout.EDGE_RIGHT) {
-                    page.getSwipeBackLayout().setX(0);
-                } else if (edge == SwipeBackLayout.EDGE_BOTTOM) {
-                    page.getSwipeBackLayout().setY(0);
-                } else if (edge == SwipeBackLayout.EDGE_TOP) {
-                    page.getSwipeBackLayout().setY(1);
-                }
+                page.getSwipeBackLayout().setX(0);
             }
         }
     }
 
     public void setSwipeBackEnable(boolean enable) {
+        isSwipeBackEnable = enable;
         if (enable) {
             mSwipeBackLayout.attachToActivity(mActivity);
         } else {
             mSwipeBackLayout.removeFromActivity(mActivity);
         }
         mSwipeBackLayout.setEnableGesture(enable);
+    }
+
+    public boolean isSwipeBackEnable() {
+        return isSwipeBackEnable;
     }
 
     public static class Builder {

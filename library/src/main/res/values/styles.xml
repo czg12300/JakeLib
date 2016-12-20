@@ -14,5 +14,15 @@
         <item name="android:windowEnterAnimation">@anim/dialog_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/dialog_bottom_out</item>
     </style>
+    <style name="PopDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
+    <style name="PopFullDialogTheme" parent="PopDialogTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimAmount">0</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

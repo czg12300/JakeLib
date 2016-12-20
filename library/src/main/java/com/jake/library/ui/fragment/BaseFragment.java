@@ -24,7 +24,7 @@ public class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -64,5 +64,55 @@ public class BaseFragment extends Fragment {
 
     protected View inflate(int layoutId, ViewGroup viewGroup) {
         return getActivity() != null ? View.inflate(getActivity(), layoutId, viewGroup) : null;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsVisible = isVisibleToUser;
+        if (isVisibleToUser) {
+            onFragmentResumeWithViewPager();
+        }
+    }
+
+    protected boolean mIsVisible;
+
+    protected boolean mFirstIn = true;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mFirstIn) {
+            mFirstIn = false;
+            return;
+        }
+        if (mIsVisible) {
+            onFragmentResumeWithViewPager();
+        }
+    }
+
+    /**
+     * 当前Fragment页面可见
+     * 1、Frament嵌套ViewPager时使用 2、复写onResume和setUserVisibleHint方法时，保留这两个方法super调用。
+     */
+    protected void onFragmentResumeWithViewPager() {
+    }
+
+    /**
+     * 判断fragment是否存在
+     *
+     * @return
+     */
+    protected boolean isAlive() {
+        return isAdded() && !isDetached() && !isRemoving() && getActivity() != null && !getActivity().isFinishing();
+    }
+
+    /**
+     * 关闭activity
+     */
+    protected void finishActivity() {
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 }

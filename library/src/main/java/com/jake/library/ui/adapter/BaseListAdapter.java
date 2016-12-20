@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jake.library.global.utils.ObjectUtil;
+import com.jake.library.utils.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;

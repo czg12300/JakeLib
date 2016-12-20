@@ -75,4 +75,11 @@ public abstract class BaseLoadStateLayoutView extends RelativeLayout {
     }
 
     public abstract void setNoDataView(View view);
+
+    /**
+     * 设置刷新按钮点击事件
+     *
+     * @param listener
+     */
+    public abstract void setOnRefreshButtonClickListener(OnClickListener listener);
 }

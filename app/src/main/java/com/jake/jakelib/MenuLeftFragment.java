@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-import com.jake.library.ui.skin.ISkinChangingCallback;
-import com.jake.library.ui.skin.SkinManager;
+import com.jake.jakelib.skin.ISkinChangingCallback;
+import com.jake.jakelib.skin.SkinManager;
 
 import java.io.File;
 

@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
-import com.jake.library.global.utils.LogUtil;
+import com.jake.library.utils.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

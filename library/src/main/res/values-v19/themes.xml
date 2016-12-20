@@ -1,7 +1,8 @@
 <resources>
 
-    <style name="AppTheme" parent="NoTitleBar">
+    <style name="TranslucentStatusTheme" parent="NoTitleActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 </resources>

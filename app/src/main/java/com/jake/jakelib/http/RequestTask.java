@@ -2,7 +2,7 @@
 package com.jake.jakelib.http;
 
 import com.jake.library.data.http.BaseMultiHttpRequest;
-import com.jake.library.global.utils.MD5Util;
+import com.jake.library.utils.MD5Util;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;

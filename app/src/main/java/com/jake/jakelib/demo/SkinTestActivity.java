@@ -3,10 +3,10 @@ package com.jake.jakelib.demo;
 
 import com.jake.jakelib.MenuLeftFragment;
 import com.jake.jakelib.R;
+import com.jake.jakelib.skin.BaseSkinActivity;
+import com.jake.jakelib.skin.ISkinChangingCallback;
+import com.jake.jakelib.skin.SkinManager;
 import com.jake.jakelib.skin.ViewHelper;
-import com.jake.library.ui.skin.BaseSkinActivity;
-import com.jake.library.ui.skin.ISkinChangingCallback;
-import com.jake.library.ui.skin.SkinManager;
 
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -42,7 +42,7 @@ public class SkinTestActivity extends BaseSkinActivity {
     private String mSkinPkgPath = Environment.getExternalStorageDirectory() + File.separator
             + "night_plugin.apk";
 
-    private String[] mDatas = new String[] {
+    private String[] mDatas = new String[]{
             "Activity", "Service", "Activity", "Service", "Activity", "Service", "Activity",
             "Service"
     };
@@ -133,7 +133,7 @@ public class SkinTestActivity extends BaseSkinActivity {
 
         switch (id) {
             case R.id.id_action_plugin_skinchange:
-               SkinManager.getInstance().changeSkin(mSkinPkgPath,
+                SkinManager.getInstance().changeSkin(mSkinPkgPath,
                         "com.zhy.plugin", new ISkinChangingCallback() {
                             @Override
                             public void onStart() {
@@ -153,7 +153,7 @@ public class SkinTestActivity extends BaseSkinActivity {
                         });
                 break;
             case R.id.id_action_remove_any_skin:
-               SkinManager.getInstance().removeAnySkin();
+                SkinManager.getInstance().removeAnySkin();
                 break;
             case R.id.id_action_test_res:
                 AssetManager assetManager = null;

@@ -4,7 +4,7 @@ package com.jake.library.data.download;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.jake.library.global.utils.MD5Util;
+import com.jake.library.utils.MD5Util;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;

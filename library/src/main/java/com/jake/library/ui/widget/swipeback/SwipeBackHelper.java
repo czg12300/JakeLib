@@ -1,7 +1,5 @@
 package com.jake.library.ui.widget.swipeback;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 /**

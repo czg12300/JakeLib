@@ -7,7 +7,7 @@ import com.jake.library.data.download.db.DownloadPart;
 import com.jake.library.data.download.db.DownloadPartOperator;
 import com.jake.library.data.download.db.DownloadState;
 import com.jake.library.data.http.OkHttpClientManager;
-import com.jake.library.global.utils.FileUtil;
+import com.jake.library.utils.FileUtil;
 
 import android.os.Handler;
 import android.os.Looper;

@@ -1,12 +1,16 @@
 
 package com.jake.jakelib.demo;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jake.jakelib.MainActivity;
 import com.jake.jakelib.R;
 import com.jake.jakelib.http.Cmd;
 import com.jake.jakelib.http.MyResponse;
@@ -30,8 +34,9 @@ public class RequestDemoActivity extends AbsSwipeBackActivity {
         editText = (EditText) findViewById(R.id.edit);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onClick(View view) {
-        startActivity(new Intent(this,DownloadActivity.class));
+        startActivity(new Intent(this,DownloadActivity.class), ActivityOptions.makeSceneTransitionAnimation(this, view, "shareNames").toBundle());
         RequestTask task = new RequestTask();
         task.setRequestPackages(Cmd.test(), Cmd.test1());
         task.request(new IMultiHttpCallback() {

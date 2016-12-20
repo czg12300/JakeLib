@@ -3,7 +3,7 @@ package com.jake.library.global;
 
 import android.content.Context;
 
-import com.jake.library.global.utils.LogUtil;
+import com.jake.library.utils.LogUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
