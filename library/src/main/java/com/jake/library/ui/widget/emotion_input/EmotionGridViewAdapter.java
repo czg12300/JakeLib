@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.jake.library.ui.adapter.BaseListAdapter;
+import com.jake.library.ui.adapter.BaseListViewHolder;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class EmotionGridViewAdapter extends BaseListAdapter<EmotionEntity, Emoti
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, final int position) {
+    public void onBindViewHolder(Holder holder, int position) {
         EmotionEntity entity = getItem(position);
         holder.itemView.setTag(entity);
         if (entity != null) {
@@ -62,7 +63,7 @@ public class EmotionGridViewAdapter extends BaseListAdapter<EmotionEntity, Emoti
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, mContext.getResources().getDisplayMetrics());
     }
 
-    protected static class Holder extends BaseListAdapter.ViewHolder {
+    protected static class Holder extends BaseListViewHolder {
         ImageView emoticon;
 
         public Holder(View itemView, ImageView imageView) {

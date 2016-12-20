@@ -17,7 +17,7 @@ import java.util.List;
  * @since 2016/9/17 12:56
  */
 
-public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListAdapter.ViewHolder> extends BaseAdapter {
+public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHolder> extends BaseAdapter {
 
     protected Context mContext;
 
@@ -201,15 +201,4 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListAdapter
     }
 
 
-    public static class ViewHolder {
-        public View itemView;
-
-        public ViewHolder(View itemView) {
-            this.itemView = itemView;
-        }
-
-        protected View findViewById(int id) {
-            return itemView != null ? itemView.findViewById(id) : null;
-        }
-    }
 }
