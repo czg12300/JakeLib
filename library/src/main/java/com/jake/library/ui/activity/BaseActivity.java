@@ -4,7 +4,6 @@ package com.jake.library.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.jake.library.global.IActivityHolder;
 
 /**
  * 描述：activity基类

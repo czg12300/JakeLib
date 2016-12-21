@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jake.jakelib.demo.CoordinatorLayoutActivity;
-import com.jake.jakelib.demo.DownloadActivity;
 import com.jake.jakelib.demo.RequestDemoActivity;
 import com.jake.jakelib.demo.SkinTestActivity;
 
@@ -31,7 +30,6 @@ public class MainActivity extends ListActivity {
 
     private List<Info> getActivityList() {
         List<Info> list = new ArrayList<Info>();
-        list.add(new Info("DownloadActivity", DownloadActivity.class));
         list.add(new Info("RequestDemoActivity", RequestDemoActivity.class));
         list.add(new Info("SkinTestActivity", SkinTestActivity.class));
         list.add(new Info("CoordinatorLayoutActivity", CoordinatorLayoutActivity.class));

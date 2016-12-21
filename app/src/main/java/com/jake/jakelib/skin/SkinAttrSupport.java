@@ -3,7 +3,7 @@ package com.jake.jakelib.skin;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.jake.library.utils.LogUtil;
+import com.jake.library.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class SkinAttrSupport
                 int id = Integer.parseInt(attrValue.substring(1));
                 String entryName = context.getResources().getResourceEntryName(id);
 
-                LogUtil.e("entryName = " + entryName);
+                LogUtils.e("entryName = " + entryName);
                 if (entryName.startsWith(SkinConfig.ATTR_PREFIX))
                 {
                     skinAttr = new SkinAttr(attrType, entryName);

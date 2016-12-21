@@ -19,12 +19,21 @@ import java.io.File;
  * @since 2016/9/16 12:11
  */
 
-public class BaseResourceController {
+public class ResourceController {
+    private ResourceController() {
+    }
 
+    public static ResourceController getInstance() {
+        return InstanceBuilder.instance;
+    }
+
+    private static class InstanceBuilder {
+        protected static ResourceController instance = new ResourceController();
+    }
 
     protected Context mContext;
 
-    public void init(Context context) {
+    protected void init(Context context) {
         this.mContext = context;
     }
 
@@ -87,20 +96,6 @@ public class BaseResourceController {
      */
     public AssetManager getAssets() {
         return mContext.getAssets();
-    }
-
-    /**
-     * 获取layout布局文件
-     *
-     * @param layoutId
-     * @return
-     */
-    public View inflate(int layoutId) {
-        return inflate(layoutId, null);
-    }
-
-    public View inflate(int layoutId, ViewGroup root) {
-        return View.inflate(mContext, layoutId, root);
     }
 
 

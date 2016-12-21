@@ -18,7 +18,7 @@ import java.io.ByteArrayOutputStream;
 /**
  * Created by Administrator on 2015/8/16.
  */
-public final class BitmapUtil {
+public final class BitmapUtils {
     public static Bitmap decodeResource(Context context, int drawableId) {
         Bitmap bitmap = null;
         try {

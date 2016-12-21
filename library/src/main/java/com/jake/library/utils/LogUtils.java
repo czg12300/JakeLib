@@ -11,14 +11,14 @@ import android.util.Log;
  * @author jakechen
  * @since 2015/10/23 15:20
  */
-public class LogUtil {
-    public static void setIsOpenLog(boolean is) {
-        isOpenLog = is;
+public class LogUtils {
+    public static void setOpenLog(boolean isOpen) {
+        isOpenLog = isOpen;
     }
 
     private static boolean isOpenLog = true; // true打开日志,false关闭日志
 
-    private static String TAG = "jake";//tag的名称
+    private static String TAG = "LogUtils";//tag的名称
 
     public static void setLogTag(String tag) {
         TAG = tag;

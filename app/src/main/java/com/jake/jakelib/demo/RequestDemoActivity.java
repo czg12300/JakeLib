@@ -36,7 +36,6 @@ public class RequestDemoActivity extends AbsSwipeBackActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onClick(View view) {
-        startActivity(new Intent(this,DownloadActivity.class), ActivityOptions.makeSceneTransitionAnimation(this, view, "shareNames").toBundle());
         RequestTask task = new RequestTask();
         task.setRequestPackages(Cmd.test(), Cmd.test1());
         task.request(new IMultiHttpCallback() {

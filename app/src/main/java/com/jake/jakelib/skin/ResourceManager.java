@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
-import com.jake.library.utils.LogUtil;
+import com.jake.library.utils.LogUtils;
 
 /**
  * Created by zhy on 15/9/22.
@@ -36,7 +36,7 @@ public class ResourceManager {
     public Drawable getDrawableByName(String name) {
         try {
             name = appendSuffix(name);
-            LogUtil.e("name = " + name);
+            LogUtils.e("name = " + name);
             return mResources.getDrawable(
                     mResources.getIdentifier(name, DEFTYPE_DRAWABLE, mPluginPackageName));
         } catch (Resources.NotFoundException e) {
@@ -53,7 +53,7 @@ public class ResourceManager {
     public int getColor(String name) {
         try {
             name = appendSuffix(name);
-            LogUtil.e("name = " + name);
+            LogUtils.e("name = " + name);
             return mResources
                     .getColor(mResources.getIdentifier(name, DEFTYPE_COLOR, mPluginPackageName));
 
@@ -67,7 +67,7 @@ public class ResourceManager {
     public ColorStateList getColorStateList(String name) {
         try {
             name = appendSuffix(name);
-            LogUtil.e("name = " + name);
+            LogUtils.e("name = " + name);
             return mResources.getColorStateList(
                     mResources.getIdentifier(name, DEFTYPE_COLOR, mPluginPackageName));
 

@@ -17,7 +17,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SkinManager.getInstance().init(this);
-        AppController.getInstance().init(this);
+        AppController.getInstance().install(this);
     }
 
 }

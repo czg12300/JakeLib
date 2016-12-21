@@ -4,9 +4,8 @@ package com.jake.library.data.http;
 import android.text.TextUtils;
 
 import com.jake.library.global.LibraryController;
-import com.jake.library.utils.LogUtil;
-import com.jake.library.utils.NetworkUtil;
-import com.jake.library.utils.UrlEncodeUtil;
+import com.jake.library.utils.LogUtils;
+import com.jake.library.utils.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +64,7 @@ public abstract class BaseMultiHttpRequest {
         if (publicParams != null && publicParams.size() > 0) {
             for (String key : publicParams.keySet()) {
                 urlBuilder.append(key).append("=")
-                        .append(UrlEncodeUtil.encode(publicParams.get(key) + "")).append("&");
+                        .append(NetworkUtils.encode(publicParams.get(key) + "")).append("&");
             }
 
         }
@@ -75,7 +74,7 @@ public abstract class BaseMultiHttpRequest {
             urlBuilder.append(privateParamsKey).append("=");
             JSONArray array = getPrivateParams();
             if (array.length() > 0) {
-                urlBuilder.append(UrlEncodeUtil.encode(array.toString()));
+                urlBuilder.append(NetworkUtils.encode(array.toString()));
             }
         } else {
             urlBuilder.deleteCharAt(urlBuilder.length() - 1);
@@ -83,7 +82,7 @@ public abstract class BaseMultiHttpRequest {
         String url = urlBuilder.toString();
         // url =
         // "http://gcapi.sy.kugou.com/index.php?r=GameCenter/apiV2&platform=1&clienttype=2&userid=0&clientversion=1&gcClientVersion=420&token=&clientAppid=1005&systemVersion=22&ptime=1468911667267&imei=355009079507556&mid=88147860145912326438488853528637666168&uuid=c24d96f50beb4fac86f1803305974832&resolution=1080*1920&nettype=1&model=SM-A7100&spid=4&sysversion=5.1.1&jsonparam=%5B%7B%22type%22%3A%221%22%2C%22i%22%3A46%2C%22itemtypeid%22%3A138%7D%5D&csign=5563efdad54f5ca36ef9fcbfece1a23f";
-        LogUtil.d(TAG_REQUEST, "Get :" + url);
+        LogUtils.d(TAG_REQUEST, "Get :" + url);
         reqBuilder.url(url);
     }
 
@@ -116,7 +115,7 @@ public abstract class BaseMultiHttpRequest {
             }
         }
         String url = getServerUrl();
-        LogUtil.d(TAG_REQUEST, "Post :" + url);
+        LogUtils.d(TAG_REQUEST, "Post :" + url);
         reqBuilder.url(url);
         reqBuilder.post(builder.build());
     }
@@ -141,7 +140,7 @@ public abstract class BaseMultiHttpRequest {
     }
 
     public void request(final IMultiHttpCallback callback) {
-        if (!NetworkUtil.isNetworkAvailable(LibraryController.getInstance().getContext())) {
+        if (!NetworkUtils.isNetworkAvailable(LibraryController.getInstance().getContext())) {
             noNetwork();
             return;
         }
@@ -152,33 +151,33 @@ public abstract class BaseMultiHttpRequest {
             } else {
                 appendGetParams(reqBuilder);
             }
-            if (callback != null) {
-                OkHttpClientManager.getInstance().getOkHttpClient().newCall(reqBuilder.build()).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
+
+            OkHttpClientManager.getInstance().getOkHttpClient().newCall(reqBuilder.build()).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    if (callback != null) {
                         callback.onFailure(handleHttpOnFailure(e));
                     }
+                }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        ConcurrentHashMap<String, Object> responsesMap = handleResponse(response,
-                                callback);
-                        if (callback != null) {
-                            callback.onResponse(responsesMap);
-                        }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    ConcurrentHashMap<String, Object> responsesMap = handleResponse(response, callback);
+                    if (callback != null) {
+                        callback.onResponse(responsesMap);
                     }
-                });
-            }
+                }
+            });
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
 
     private ConcurrentHashMap<String, Object> handleResponse(Response httpResponse,
-            IMultiHttpCallback callback) throws IOException {
+                                                             IMultiHttpCallback callback) throws IOException {
         if (httpResponse != null && httpResponse.isSuccessful() && !mIsCancel) {
             String result = httpResponse.body().string();
-            LogUtil.d(TAG_RESPONSE, result);
+            LogUtils.d(TAG_RESPONSE, result);
             if (!TextUtils.isEmpty(result)) {
                 try {
                     JSONArray array = new JSONArray(result);

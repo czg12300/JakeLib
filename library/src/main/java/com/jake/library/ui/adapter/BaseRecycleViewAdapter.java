@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.jake.library.utils.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +81,7 @@ public abstract class BaseRecycleViewAdapter<Entity, ViewHolder extends BaseRecy
      * @param datas
      */
     public void add(List<Entity> datas) {
-        if (ObjectUtil.isNotNull(datas)) {
+        if (datas != null) {
             checkDataIsNull();
             mList.addAll(datas);
         }
@@ -95,7 +94,7 @@ public abstract class BaseRecycleViewAdapter<Entity, ViewHolder extends BaseRecy
      * @param data
      */
     public void add(int position, List<Entity> data) {
-        if (ObjectUtil.isNotNull(data)) {
+        if (data != null) {
             checkDataIsNull();
             mList.addAll(position, data);
         }
@@ -108,12 +107,8 @@ public abstract class BaseRecycleViewAdapter<Entity, ViewHolder extends BaseRecy
      * @param data
      */
     public void set(Entity data) {
-        if (ObjectUtil.isNotNull(mList)) {
-            mList.clear();
-        } else {
-            mList = new ArrayList<>();
-        }
-        if (ObjectUtil.isNotNull(data)) {
+        checkDataIsNull();
+        if (data != null) {
             mList.add(data);
         }
     }
@@ -126,7 +121,7 @@ public abstract class BaseRecycleViewAdapter<Entity, ViewHolder extends BaseRecy
      * @param datas
      */
     public void set(List<Entity> datas) {
-        if (ObjectUtil.isNotNull(datas)) {
+        if (datas != null) {
             mList = datas;
         }
     }
@@ -139,7 +134,7 @@ public abstract class BaseRecycleViewAdapter<Entity, ViewHolder extends BaseRecy
      * @return
      */
     public Entity del(int position) {
-        if (ObjectUtil.isNotNull(mList) && position < mList.size()) {
+        if (mList != null && position < mList.size()) {
             Entity t = mList.remove(position);
             return t;
         }
@@ -148,7 +143,7 @@ public abstract class BaseRecycleViewAdapter<Entity, ViewHolder extends BaseRecy
 
 
     public void clear() {
-        if (ObjectUtil.isNotNull(mList)) {
+        if (mList != null) {
             mList.clear();
         }
     }

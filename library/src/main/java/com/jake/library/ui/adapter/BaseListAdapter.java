@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.jake.library.utils.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +123,7 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHol
      * @param datas
      */
     public void add(List<Entity> datas) {
-        if (ObjectUtil.isNotNull(datas)) {
+        if (datas != null) {
             checkDataIsNull();
             mList.addAll(datas);
         }
@@ -137,7 +136,7 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHol
      * @param data
      */
     public void add(int position, List<Entity> data) {
-        if (ObjectUtil.isNotNull(data)) {
+        if (data != null) {
             checkDataIsNull();
             mList.addAll(position, data);
         }
@@ -150,12 +149,9 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHol
      * @param data
      */
     public void set(Entity data) {
-        if (ObjectUtil.isNotNull(mList)) {
-            mList.clear();
-        } else {
-            mList = new ArrayList<>();
-        }
-        if (ObjectUtil.isNotNull(data)) {
+        checkDataIsNull();
+        mList.clear();
+        if (data != null) {
             mList.add(data);
         }
     }
@@ -168,7 +164,7 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHol
      * @param datas
      */
     public void set(List<Entity> datas) {
-        if (ObjectUtil.isNotNull(datas)) {
+        if (datas != null) {
             mList = datas;
         }
     }
@@ -181,7 +177,7 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHol
      * @return
      */
     public Entity del(int position) {
-        if (ObjectUtil.isNotNull(mList) && position < mList.size()) {
+        if (mList != null && position < mList.size()) {
             Entity t = mList.remove(position);
             return t;
         }
@@ -190,7 +186,7 @@ public abstract class BaseListAdapter<Entity, ViewHolder extends BaseListViewHol
 
 
     public void clear() {
-        if (ObjectUtil.isNotNull(mList)) {
+        if (mList != null) {
             mList.clear();
         }
     }

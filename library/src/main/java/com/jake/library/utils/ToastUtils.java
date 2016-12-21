@@ -17,7 +17,7 @@ import com.jake.library.global.LibraryController;
  *
  * @author Created by jakechen on 2015/8/11.
  */
-public class ToastUtil {
+public class ToastUtils {
     protected static Toast mToast;
 
     private static final int MSG_SHOW = 0x001;
@@ -33,8 +33,26 @@ public class ToastUtil {
                 }
             });
 
+    public static void setView(View view) {
+        if (view != null) {
+            mToast.setView(view);
+        }
+    }
+
     public static void show(int stringId) {
         show(LibraryController.getInstance().getContext().getString(stringId));
+    }
+
+
+    public static void showDelayed(int stringId, long spit) {
+        showDelayed(LibraryController.getInstance().getContext().getString(stringId), spit);
+    }
+
+    public static void showDelayed(String msg, long spit) {
+        if (TextUtils.isEmpty(msg)) {
+            return;
+        }
+        mMainHandle.sendMessageDelayed(mMainHandle.obtainMessage(MSG_SHOW, msg), spit);
     }
 
     public static void show(String msg) {
@@ -52,6 +70,7 @@ public class ToastUtil {
         if (mToast == null) {
             Context context = LibraryController.getInstance().getContext();
             mToast = new Toast(context);
+
             mToast.setView(View.inflate(context, R.layout.toast_layout, null));
             mToast.setDuration(Toast.LENGTH_SHORT);
         }

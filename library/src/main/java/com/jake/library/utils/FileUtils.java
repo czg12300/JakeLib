@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Trinea 2012-5-12
  */
-public class FileUtil {
+public class FileUtils {
 
     public final static String FILE_EXTENSION_SEPARATOR = ".";
 
@@ -69,8 +69,8 @@ public class FileUtil {
      *
      * @param filePath
      * @param content
-     * @param append is append, if true, write to the end of file, else clear
-     *            content of file and write into it
+     * @param append   is append, if true, write to the end of file, else clear
+     *                 content of file and write into it
      * @return return true
      * @throws IOException if an error occurs while operator FileWriter
      */
@@ -96,7 +96,7 @@ public class FileUtil {
 
     /**
      * write file
-     * 
+     *
      * @param filePath
      * @param stream
      * @return return true
@@ -131,7 +131,7 @@ public class FileUtil {
 
     /**
      * read file to string list, a element of list is a line
-     * 
+     *
      * @param filePath
      * @return if file not exist, return null, else return content of file
      * @throws IOException if an error occurs while operator BufferedReader
@@ -198,7 +198,7 @@ public class FileUtil {
 
     /**
      * get file name from path, not include suffix
-     * 
+     * <p>
      * <pre>
      *      getFileNameWithoutExtension(null)               =   null
      *      getFileNameWithoutExtension("")                 =   ""
@@ -213,7 +213,7 @@ public class FileUtil {
      *      getFileNameWithoutExtension("/home/admin")      =   "admin"
      *      getFileNameWithoutExtension("/home/admin/a.txt/b.mp3")  =   "b"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return file name from path, not include suffix
      * @see
@@ -237,7 +237,7 @@ public class FileUtil {
 
     /**
      * get file name from path, include suffix
-     * 
+     * <p>
      * <pre>
      *      getFileName(null)               =   null
      *      getFileName("")                 =   ""
@@ -252,7 +252,7 @@ public class FileUtil {
      *      getFileName("/home/admin")      =   "admin"
      *      getFileName("/home/admin/a.txt/b.mp3")  =   "b.mp3"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return file name from path, include suffix
      */
@@ -267,7 +267,7 @@ public class FileUtil {
 
     /**
      * get folder name from path
-     * 
+     * <p>
      * <pre>
      *      getFolderName(null)               =   null
      *      getFolderName("")                 =   ""
@@ -283,7 +283,7 @@ public class FileUtil {
      *      getFolderName("/home/admin")      =   "/home"
      *      getFolderName("/home/admin/a.txt/b.mp3")  =   "/home/admin/a.txt"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -299,7 +299,7 @@ public class FileUtil {
 
     /**
      * get suffix of file from path
-     * 
+     * <p>
      * <pre>
      *      getFileExtension(null)               =   ""
      *      getFileExtension("")                 =   ""
@@ -315,7 +315,7 @@ public class FileUtil {
      *      getFileExtension("/home/admin/a.txt/b")  =   ""
      *      getFileExtension("/home/admin/a.txt/b.mp3")  =   "mp3"
      * </pre>
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -341,16 +341,16 @@ public class FileUtil {
      * <li>makeDirs("C:\\Users\\Trinea") can only create users folder</li>
      * <li>makeFolder("C:\\Users\\Trinea\\") can create Trinea folder</li>
      * </ul>
-     * 
+     *
      * @param filePath
      * @return true if the necessary directories have been created or the target
-     *         directory already exists, false one of the directories can not be
-     *         created.
-     *         <ul>
-     *         <li>if {@link FileUtil#getFolderName(String)} return null, return
-     *         false</li>
-     *         <li>if target directory already exists, return true</li>
-     *         </ul>
+     * directory already exists, false one of the directories can not be
+     * created.
+     * <ul>
+     * <li>if {@link FileUtils#getFolderName(String)} return null, return
+     * false</li>
+     * <li>if target directory already exists, return true</li>
+     * </ul>
      */
     public static boolean createFolder(String filePath, boolean recreate) {
         String folderName = getFolderName(filePath);
@@ -381,7 +381,7 @@ public class FileUtil {
 
     /**
      * Indicates if this file represents a file on the underlying file system.
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -397,7 +397,7 @@ public class FileUtil {
     /**
      * Indicates if this file represents a directory on the underlying file
      * system.
-     * 
+     *
      * @param directoryPath
      * @return
      */
@@ -417,7 +417,7 @@ public class FileUtil {
      * <li>if path not exist, return true</li>
      * <li>if path exist, delete recursion. return true</li>
      * <ul>
-     * 
+     *
      * @param path
      * @return
      */
@@ -452,7 +452,7 @@ public class FileUtil {
      * <li>if path is null or empty, return -1</li>
      * <li>if path exist and it is a file, return file size, else return -1</li>
      * <ul>
-     * 
+     *
      * @param path
      * @return
      */
@@ -467,7 +467,7 @@ public class FileUtil {
 
     /**
      * 重命名文件/文件夹
-     * 
+     *
      * @param path
      * @param newName
      */
@@ -482,14 +482,14 @@ public class FileUtil {
                 result = file.renameTo(new File(newName));
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
-
         return result;
     }
 
     /**
      * 读取文件
-     * 
+     *
      * @param filePath
      * @return 输入流
      */
@@ -503,11 +503,9 @@ public class FileUtil {
             if (isFileExist(filePath)) {
                 File f = new File(filePath);
                 is = new FileInputStream(f);
-            } else {
-                return null;
             }
         } catch (Exception ex) {
-            return null;
+            ex.printStackTrace();
         }
         return is;
     }
@@ -528,7 +526,7 @@ public class FileUtil {
             File file = new File(path);
             exist = file.exists();
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
         return exist;
     }
@@ -551,6 +549,7 @@ public class FileUtil {
         }
         return fis;
     }
+
     /**
      * 创建一个空的文件
      *
@@ -595,8 +594,6 @@ public class FileUtil {
         FileOutputStream fs = null;
         InputStream inStream = null;
         try {
-            int bytesum = 0;
-            int byteread = 0;
             if (oldfile.exists()) { // 文件存在时
                 inStream = new FileInputStream(oldPath); // 读入原文件
                 System.out.println(newPath);
@@ -607,20 +604,17 @@ public class FileUtil {
                 }
                 if (isExist(newPath)) {
                     fs = new FileOutputStream(newPath);
-                    byte[] buffer = new byte[1444];
-                    while ((byteread = inStream.read(buffer)) != -1) {
-                        bytesum += byteread; // 字节数 文件大小
-                        System.out.println(bytesum);
-                        fs.write(buffer, 0, byteread);
+                    int len = IoUtils.copy(inStream, fs);
+                    System.out.println(len);
+                    if (len > 0) {
+                        isCopySuccess = true;
                     }
-                    isCopySuccess = true;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            IoUtil.close(fs);
-            IoUtil.close(inStream);
+            IoUtils.close(fs, inStream);
         }
         return isCopySuccess;
     }

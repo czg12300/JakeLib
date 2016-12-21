@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jake.library.R;
-import com.jake.library.utils.BaseUIUtils;
-import com.jake.library.utils.ToastUtil;
 import com.jake.library.ui.widget.ResizeLayoutView;
+import com.jake.library.utils.AppUtils;
+import com.jake.library.utils.ToastUtils;
 
 
 /**
@@ -85,9 +85,9 @@ public class EmojiBarLayoutView extends ResizeLayoutView {
 
     private void toggleEmoji() {
         if (mIvEmojiToggle.isSelected()) {
-            BaseUIUtils.showSoftInput(getContext());
+            AppUtils.showSoftInput(getContext());
         } else {
-            BaseUIUtils.hideSoftInput(getContext());
+            AppUtils.hideSoftInput(getContext());
             mIvEmojiToggle.setSelected(true);
             mIvEmojiToggle.setImageResource(R.drawable.img_toggle_text);
             mVpEmoji.setVisibility(View.VISIBLE);
@@ -156,7 +156,7 @@ public class EmojiBarLayoutView extends ResizeLayoutView {
                     mEvContent.setText(lastText);
                     mEvContent.setSelection(lastText.length());
                     if (isShowToast) {
-                        ToastUtil.show("最多能输入" + MAX_TEXT_COUNT + "个字符");
+                        ToastUtils.show("最多能输入" + MAX_TEXT_COUNT + "个字符");
                     }
                 } else {
                     showTextCount(isCountdown ? MAX_TEXT_COUNT - len : len);

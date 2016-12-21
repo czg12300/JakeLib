@@ -4,9 +4,8 @@ package com.jake.library.data.http;
 import android.text.TextUtils;
 
 import com.jake.library.global.LibraryController;
-import com.jake.library.utils.LogUtil;
-import com.jake.library.utils.NetworkUtil;
-import com.jake.library.utils.UrlEncodeUtil;
+import com.jake.library.utils.LogUtils;
+import com.jake.library.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -59,18 +58,18 @@ public abstract class BaseSingleHttpRequest {
             urlBuilder.append("?");
         }
         for (String key : mParams.keySet()) {
-            urlBuilder.append(key).append("=").append(UrlEncodeUtil.encode(mParams.get(key) + ""))
+            urlBuilder.append(key).append("=").append(NetworkUtils.encode(mParams.get(key) + ""))
                     .append("&");
         }
         urlBuilder.deleteCharAt(urlBuilder.length() - 1);
         String url = urlBuilder.toString();
-        LogUtil.d(TAG_REQUEST, "Get :" + url);
+        LogUtils.d(TAG_REQUEST, "Get :" + url);
         reqBuilder.url(url);
     }
 
     private String parseUrl() {
         if (!TextUtils.isEmpty(mUrl)) {
-            if (NetworkUtil.isHttpUrl(mUrl) || NetworkUtil.isHttpsUrl(mUrl)) {
+            if (NetworkUtils.isHttpUrl(mUrl) || NetworkUtils.isHttpsUrl(mUrl)) {
                 return mUrl;
             } else {
                 return getServerUrl() + mUrl;
@@ -89,7 +88,7 @@ public abstract class BaseSingleHttpRequest {
             builder.addEncoded(key, mParams.get(key) + "");
         }
         String url = parseUrl();
-        LogUtil.d(TAG_REQUEST, "Post :" + url);
+        LogUtils.d(TAG_REQUEST, "Post :" + url);
         reqBuilder.url(url);
         reqBuilder.post(builder.build());
     }
@@ -114,7 +113,7 @@ public abstract class BaseSingleHttpRequest {
     }
 
     public Object request() {
-        if (!NetworkUtil.isNetworkAvailable(LibraryController.getInstance().getContext())) {
+        if (!NetworkUtils.isNetworkAvailable(LibraryController.getInstance().getContext())) {
             noNetwork();
             return null;
         }
@@ -130,7 +129,7 @@ public abstract class BaseSingleHttpRequest {
             if (response.isSuccessful() && !mIsCancel) {
                 IJsonParse baseResponse = mResponseClass.newInstance();
                 String result = response.body().string();
-                LogUtil.d(TAG_RESPONSE, result);
+                LogUtils.d(TAG_RESPONSE, result);
                 if (baseResponse.parseJson(result)) {
                     return baseResponse;
                 }

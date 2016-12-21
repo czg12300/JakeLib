@@ -8,7 +8,7 @@ import java.security.MessageDigest;
  * 
  * @author chenys
  */
-public class MD5Util {
+public class MD5Utils {
 
     /**
      * 获取MD5

@@ -2,7 +2,7 @@
 package com.jake.jakelib.http;
 
 import com.jake.library.data.http.BaseMultiHttpRequest;
-import com.jake.library.utils.MD5Util;
+import com.jake.library.utils.MD5Utils;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,7 +42,7 @@ public class RequestTask extends BaseMultiHttpRequest {
         map.put("spid", "4");
         map.put("sysversion", "5.1.1");
         map.put("csign",
-                MD5Util.getMd5(
+                MD5Utils.getMd5(
                         "1" + "0" + pTime + getPrivateParams().toString() + getSecurityKeyForSign())
                         .toLowerCase());
         return map;
@@ -54,7 +54,7 @@ public class RequestTask extends BaseMultiHttpRequest {
      * @return
      */
     public static String getSecurityKeyForSign() {
-        byte[] data = MD5Util
+        byte[] data = MD5Utils
                 .hexStringToByte("2D197D7B685F59187F0E6A2D2D180C7D1A5D23697A7E182D2F68087D6D5A2B13");
         unEncrypt(data);
         return new String(data);
@@ -63,7 +63,7 @@ public class RequestTask extends BaseMultiHttpRequest {
     public static void unEncrypt(byte[] source) {
         if (source != null && source.length > 0) {
             int length = source.length;
-            byte[] encrypt_key = MD5Util.hexStringToByte("1A2B3C4D5E6F");
+            byte[] encrypt_key = MD5Utils.hexStringToByte("1A2B3C4D5E6F");
             int keyLen = encrypt_key.length;
             for (int i = 0; i < length; i++) {
                 source[i] ^= encrypt_key[i % keyLen];

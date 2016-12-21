@@ -35,8 +35,8 @@ import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.jake.library.utils.FileUtil;
-import com.jake.library.utils.MD5Util;
+import com.jake.library.utils.FileUtils;
+import com.jake.library.utils.MD5Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -322,7 +322,7 @@ public class FrescoImageLoader {
                     public void run() {
                         String newFileName = getFileNameByUrl(url);
                         String resultFilePath = storagePath + File.separator + newFileName;
-                        boolean isSuccess = FileUtil.copyFile(image.getAbsolutePath(), resultFilePath);
+                        boolean isSuccess = FileUtils.copyFile(image.getAbsolutePath(), resultFilePath);
                         if (isSuccess) {
                             if (listener != null) {
                                 listener.onLoaded(Uri.parse(resultFilePath));
@@ -406,7 +406,7 @@ public class FrescoImageLoader {
 
     @NonNull
     private static String getFileNameByUrl(String url) {
-        String newFileName = MD5Util.getMd5(url) + ".jpg";
+        String newFileName = MD5Utils.getMd5(url) + ".jpg";
         if (url.startsWith("http://") || url.startsWith("https://")) {
             newFileName = url.substring(url.lastIndexOf("/"));
         }

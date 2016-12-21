@@ -11,7 +11,7 @@ import android.content.Context;
 
 public interface IAppController {
 
-    void init(Context context);
+    void install(Context context);
 
     Context getContext();
 }
