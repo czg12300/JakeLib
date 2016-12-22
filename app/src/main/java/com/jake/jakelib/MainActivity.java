@@ -16,6 +16,14 @@ import android.widget.TextView;
 import com.jake.jakelib.demo.CoordinatorLayoutActivity;
 import com.jake.jakelib.demo.RequestDemoActivity;
 import com.jake.jakelib.demo.SkinTestActivity;
+import com.jake.jakelib.http.OkHttpDataFetchLoader;
+import com.jake.library.data.http.HttpEngine;
+import com.jake.library.data.http.HttpRequestCallback;
+import com.jake.library.data.http.HttpUrlConnectDataFetchLoader;
+import com.jake.library.data.http.IResponse;
+import com.jake.library.data.http.RequestPackage;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +34,25 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setListAdapter(new MyAdapter(this, getActivityList()));
+        Response response = new Response();
+        RequestPackage requestPackage = new RequestPackage();
+        HttpEngine.install(HttpEngine.Builder
+                .create()
+                .setDataFetchLoader(new OkHttpDataFetchLoader())
+                .setExecutorService(null));
+        HttpEngine.with(HttpEngine.Method.POST)
+                .setResponse(response)
+                .setRequestPackage(requestPackage)
+                .setCallback(new HttpRequestCallback<Response>() {
+                    @Override
+                    public void onSuccess(Response response) {
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg) {
+
+                    }
+                }).request();
     }
 
     private List<Info> getActivityList() {
@@ -34,6 +61,14 @@ public class MainActivity extends ListActivity {
         list.add(new Info("SkinTestActivity", SkinTestActivity.class));
         list.add(new Info("CoordinatorLayoutActivity", CoordinatorLayoutActivity.class));
         return list;
+    }
+
+    static class Response implements IResponse {
+
+        @Override
+        public void parser(String result) throws JSONException {
+
+        }
     }
 
     @Override

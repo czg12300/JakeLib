@@ -47,6 +47,10 @@ public class NetworkUtils {
 
     }
 
+    public static boolean isHttpOrHttpsUrl(String url) {
+        return isHttpsUrl(url) || isHttpUrl(url);
+    }
+
     public static boolean isHttpUrl(String url) {
         return (null != url) && (url.length() > 6)
                 && url.substring(0, 7).equalsIgnoreCase("http://");

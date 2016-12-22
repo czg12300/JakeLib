@@ -1,7 +1,7 @@
 package com.jake.jakelib.http;
 
-import com.jake.library.data.http.BaseMultiRequestPackage;
-import com.jake.library.data.http.IMultiJsonParse;
+import com.jake.library.data.httpold.BaseMultiRequestPackage;
+import com.jake.library.data.httpold.IMultiJsonParse;
 
 /**
  * 描述：

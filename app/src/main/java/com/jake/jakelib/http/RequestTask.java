@@ -1,7 +1,7 @@
 
 package com.jake.jakelib.http;
 
-import com.jake.library.data.http.BaseMultiHttpRequest;
+import com.jake.library.data.httpold.BaseMultiHttpRequest;
 import com.jake.library.utils.MD5Utils;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.jake.jakelib.http;
 
-import com.jake.library.data.http.IMultiJsonParse;
+import com.jake.library.data.httpold.IMultiJsonParse;
 
 import org.json.JSONObject;
 

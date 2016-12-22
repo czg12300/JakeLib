@@ -2,21 +2,18 @@
 package com.jake.jakelib.demo;
 
 import android.annotation.TargetApi;
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.jake.jakelib.MainActivity;
 import com.jake.jakelib.R;
 import com.jake.jakelib.http.Cmd;
 import com.jake.jakelib.http.MyResponse;
 import com.jake.jakelib.http.MyResponse1;
 import com.jake.jakelib.http.RequestTask;
-import com.jake.library.data.http.IMultiHttpCallback;
+import com.jake.library.data.httpold.IMultiHttpCallback;
 import com.jake.library.ui.activity.AbsSwipeBackActivity;
 
 import java.util.concurrent.ConcurrentHashMap;
