@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
+    defaultConfig {
+        minSdkVersion rootProject.ext.miniSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
     buildTypes {
         release {
@@ -32,7 +32,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.facebook.fresco:fresco:0.12.0'
-    compile ('com.facebook.fresco:animated-gif:0.10.0'){
+    compile('com.facebook.fresco:animated-gif:0.10.0') {
         exclude group: 'com.parse.bolts', module: 'bolts-android'
     }
 }
