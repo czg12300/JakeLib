@@ -7,8 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.io.File;
 
@@ -19,26 +17,12 @@ import java.io.File;
  * @since 2016/9/16 12:11
  */
 
-public class ResourceController {
-    private ResourceController() {
-    }
+public abstract class BaseResourceController implements IAppController {
 
-    public static ResourceController getInstance() {
-        return InstanceBuilder.instance;
-    }
-
-    private static class InstanceBuilder {
-        protected static ResourceController instance = new ResourceController();
-    }
-
-    protected Context mContext;
-
-    protected void init(Context context) {
-        this.mContext = context;
-    }
+    protected Context mAppContext;
 
 
-    public Point getSreenDimens() {
+    public Point getScreenDimens() {
         Point point = new Point();
         point.set(getDisplayMetrics().widthPixels, getDisplayMetrics().heightPixels);
         return point;
@@ -59,7 +43,7 @@ public class ResourceController {
      * @return
      */
     public File getCacheDir() {
-        return mContext.getCacheDir();
+        return mAppContext.getCacheDir();
     }
 
     /**
@@ -68,7 +52,7 @@ public class ResourceController {
      * @return
      */
     public PackageManager getPackageManager() {
-        return mContext.getPackageManager();
+        return mAppContext.getPackageManager();
     }
 
     /**
@@ -77,7 +61,7 @@ public class ResourceController {
      * @return
      */
     public Resources getResources() {
-        return mContext.getResources();
+        return mAppContext.getResources();
     }
 
     /**
@@ -95,7 +79,7 @@ public class ResourceController {
      * @return
      */
     public AssetManager getAssets() {
-        return mContext.getAssets();
+        return mAppContext.getAssets();
     }
 
 
@@ -149,4 +133,20 @@ public class ResourceController {
         return getResources().getStringArray(id);
     }
 
+    @Override
+    public Context getApplicationContext() {
+        return mAppContext;
+    }
+
+    @Override
+    public void install(Context context) {
+        if (context != null) {
+            mAppContext = context;
+        }
+    }
+
+    @Override
+    public boolean isInstall() {
+        return mAppContext != null;
+    }
 }

@@ -1,5 +1,7 @@
 package com.jake.library.data.http;
 
+import android.content.Context;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
@@ -18,10 +20,23 @@ public class HttpEngine {
     private static volatile HttpEngine engine;
     private ExecutorService mExecutorService;
     private HttpDataFetchLoader mDataFetchLoader;
+    private Context mAppContext;
 
-    private HttpEngine(ExecutorService service, HttpDataFetchLoader dataFetchLoader) {
+    private HttpEngine() {
+    }
+
+    private void setExecutorService(ExecutorService service) {
         mExecutorService = service;
+    }
+
+    private void setHttpDataFetchLoader(HttpDataFetchLoader dataFetchLoader) {
         mDataFetchLoader = dataFetchLoader;
+    }
+
+    private void setContext(Context context) {
+        if (context != null) {
+            mAppContext = context.getApplicationContext();
+        }
     }
 
     /**
@@ -43,6 +58,7 @@ public class HttpEngine {
         checkInstallOrNot();
         HttpDataFetch dataFetch = engine.mDataFetchLoader.getDataFetch(engine.mExecutorService);
         dataFetch.setMethod(method);
+        dataFetch.setContext(engine.mAppContext);
         return dataFetch;
     }
 
@@ -61,7 +77,9 @@ public class HttpEngine {
 
     public static class Builder {
         private ExecutorService executorService;
-        private HttpDataFetchLoader dataFetchLoader;
+        private Class<?> dataFetchLoader;
+        private Context mAppContext;
+        private HttpEngine mHttpEngine = new HttpEngine();
 
         private Builder() {
         }
@@ -75,8 +93,15 @@ public class HttpEngine {
             return this;
         }
 
-        public Builder setDataFetchLoader(HttpDataFetchLoader dataFetchLoader) {
+        public Builder setDataFetchLoader(Class<?> dataFetchLoader) {
             this.dataFetchLoader = dataFetchLoader;
+            return this;
+        }
+
+        public Builder setContext(Context context) {
+            if (context != null) {
+                mAppContext = context.getApplicationContext();
+            }
             return this;
         }
 
@@ -93,9 +118,20 @@ public class HttpEngine {
                         });
             }
             if (dataFetchLoader == null) {
-                dataFetchLoader = new HttpUrlConnectDataFetchLoader();
+                dataFetchLoader = HttpUrlConnectDataFetchLoader.class;
             }
-            return new HttpEngine(executorService, dataFetchLoader);
+            HttpDataFetchLoader loader = null;
+            try {
+                loader = (HttpDataFetchLoader) dataFetchLoader.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            mHttpEngine.setExecutorService(executorService);
+            mHttpEngine.setContext(mAppContext);
+            mHttpEngine.setHttpDataFetchLoader(loader);
+            return mHttpEngine;
         }
     }
 }

@@ -128,7 +128,7 @@ public class ViewUtils {
         if (stringIds != null && stringIds.length > 0) {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < stringIds.length; i++) {
-                builder.append(LibraryController.getInstance().getContext().getString(stringIds[i]));
+                builder.append(LibraryController.get().getApplicationContext().getString(stringIds[i]));
             }
             return builder.toString();
         }

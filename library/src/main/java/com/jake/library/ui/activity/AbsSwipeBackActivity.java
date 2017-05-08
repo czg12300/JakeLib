@@ -2,6 +2,7 @@ package com.jake.library.ui.activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 
 import com.jake.library.R;
@@ -20,22 +21,24 @@ import java.lang.ref.WeakReference;
 public class AbsSwipeBackActivity extends AbsBroadcastActivity {
     private WeakReference<SwipeBackPage> mSwipeBackPage;
 
+    @CallSuper
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SwipeBackPage.Builder builder = SwipeBackPage.Builder.create(this);
-        builder.setSwipeBackEnable(true)
-                .setSwipeSensitivity(1f)
-                .setShowScrim(false)
-                .setSwipeEdge(getResources().getDisplayMetrics().widthPixels)
-                .setSwipeRelateOffset(getResources().getDisplayMetrics().widthPixels / 4)
-                .setSwipeRelateEnable(true);
-        mSwipeBackPage = new WeakReference<>(builder.build());
-        SwipeBackHelper.addActivity(getSwipeBackPage());
-        SwipeBackPage swipeBackPage = getSwipeBackPage();
-        if (swipeBackPage != null && swipeBackPage.isSwipeBackEnable()) {
-            overridePendingTransition(R.anim.swipe_back_activity_open, R.anim.swipe_back_activity_exit);
+        if (willUseSwipeBack()) {
+            SwipeBackPage.Builder builder = SwipeBackPage.Builder.create(this);
+            builder.setSwipeBackEnable(true)
+                    .setSwipeSensitivity(1f)
+                    .setShowScrim(false)
+                    .setSwipeEdge(getResources().getDisplayMetrics().widthPixels)
+                    .setSwipeRelateOffset(getResources().getDisplayMetrics().widthPixels / 4)
+                    .setSwipeRelateEnable(true);
+            mSwipeBackPage = new WeakReference<>(builder.build());
+            SwipeBackHelper.addActivity(getSwipeBackPage());
+            SwipeBackPage swipeBackPage = getSwipeBackPage();
+            if (swipeBackPage != null && swipeBackPage.isSwipeBackEnable()) {
+                overridePendingTransition(R.anim.swipe_back_activity_open, R.anim.swipe_back_activity_exit);
+            }
         }
     }
 
@@ -44,8 +47,12 @@ public class AbsSwipeBackActivity extends AbsBroadcastActivity {
      *
      * @param builder
      */
-    protected void configSwipBack(SwipeBackPage.Builder builder) {
+    protected void configSwipeBack(SwipeBackPage.Builder builder) {
 
+    }
+
+    protected boolean willUseSwipeBack() {
+        return true;
     }
 
     /**

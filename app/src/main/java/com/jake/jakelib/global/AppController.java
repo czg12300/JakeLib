@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.jake.library.global.IAppController;
 import com.jake.library.global.LibraryController;
-import com.jake.library.global.ResourceController;
 
 /**
  * 描述：全局变量
@@ -22,7 +21,7 @@ public class AppController implements IAppController {
     @Override
     public void install(Context context) {
         mContext = context;
-        LibraryController.getInstance().install(context);
+        LibraryController.get().install(context);
     }
 
     @Override

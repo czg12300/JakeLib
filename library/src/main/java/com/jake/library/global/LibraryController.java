@@ -10,25 +10,39 @@ import android.content.Context;
  */
 
 public class LibraryController implements IAppController {
-    private Context context;
+    private static LibraryController mInstance = new LibraryController();
+    private Context mAppContext;
 
 
-    public static LibraryController getInstance() {
-        return InstanceBuilder.instance;
+    public static LibraryController get() {
+        return mInstance;
+    }
+
+    @Override
+    public Context getApplicationContext() {
+        return mAppContext;
     }
 
     @Override
     public void install(Context context) {
-        this.context = context;
-        ResourceController.getInstance().init(context);
+        if (context != null) {
+            mAppContext = context.getApplicationContext();
+        }
+        this.mAppContext = context;
     }
 
     @Override
-    public Context getContext() {
-        return context;
+    public void onCreate() {
+
     }
 
-    private static class InstanceBuilder {
-        protected static LibraryController instance = new LibraryController();
+    @Override
+    public void onLowMemory() {
+
+    }
+
+    @Override
+    public boolean isInstall() {
+        return mAppContext!=null;
     }
 }

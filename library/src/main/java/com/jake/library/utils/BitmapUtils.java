@@ -33,7 +33,7 @@ public final class BitmapUtils {
 
     public static Bitmap decodeResource(int drawableId) {
 
-        return decodeResource(LibraryController.getInstance().getContext(), drawableId);
+        return decodeResource(LibraryController.get().getmAppContext(), drawableId);
     }
 
     public static Bitmap decodeResource(Context context, int drawableId, int width, int height) {

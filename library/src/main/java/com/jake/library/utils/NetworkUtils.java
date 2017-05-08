@@ -73,6 +73,9 @@ public class NetworkUtils {
      * @return
      */
     public static boolean isNetworkAvailable(Context context) {
+        if (context == null) {
+            return false;
+        }
         // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager == null) {

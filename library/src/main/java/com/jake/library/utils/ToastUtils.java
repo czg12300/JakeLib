@@ -40,12 +40,12 @@ public class ToastUtils {
     }
 
     public static void show(int stringId) {
-        show(LibraryController.getInstance().getContext().getString(stringId));
+        show(LibraryController.get().getmAppContext().getString(stringId));
     }
 
 
     public static void showDelayed(int stringId, long spit) {
-        showDelayed(LibraryController.getInstance().getContext().getString(stringId), spit);
+        showDelayed(LibraryController.get().getmAppContext().getString(stringId), spit);
     }
 
     public static void showDelayed(String msg, long spit) {
@@ -68,7 +68,7 @@ public class ToastUtils {
 
     private static void showToast(String msg) {
         if (mToast == null) {
-            Context context = LibraryController.getInstance().getContext();
+            Context context = LibraryController.get().getmAppContext();
             mToast = new Toast(context);
 
             mToast.setView(View.inflate(context, R.layout.toast_layout, null));

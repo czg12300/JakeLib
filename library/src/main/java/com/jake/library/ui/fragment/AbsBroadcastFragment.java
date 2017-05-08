@@ -1,4 +1,4 @@
-package com.jake.library.ui.activity;
+package com.jake.library.ui.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.jake.library.utils.LocalBroadcastUtils;
@@ -14,18 +13,18 @@ import com.jake.library.utils.LocalBroadcastUtils;
 import java.util.ArrayList;
 
 /**
- * 描述：具有广播接收器的activity,子类重写需要调用父类的onCreate和onDestroy方法
+ * 具有广播的fragment
  *
- * @author jakechen
- * @since 2016/12/19 11:00
+ * @author jake
+ * @since 2017/5/8 上午10:49
  */
 
-public class AbsBroadcastActivity extends BaseActivity {
+public class AbsBroadcastFragment extends BaseFragment {
     private BroadcastReceiver mReceiver;
 
     @CallSuper
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ArrayList<String> actions = new ArrayList<>();
         setupBroadcastActions(actions);
@@ -43,9 +42,9 @@ public class AbsBroadcastActivity extends BaseActivity {
                 }
             }
             if (isUsingLocalBroadcast()) {
-                LocalBroadcastUtils.registerReceiver(getApplicationContext(), mReceiver, filter);
+                LocalBroadcastUtils.registerReceiver(getActivity(), mReceiver, filter);
             } else {
-                registerReceiver(mReceiver, filter);
+                getActivity().registerReceiver(mReceiver, filter);
             }
         }
     }
@@ -62,7 +61,6 @@ public class AbsBroadcastActivity extends BaseActivity {
     protected void setupBroadcastActions(ArrayList<String> actions) {
     }
 
-
     /**
      * 处理广播接收到的事情
      *
@@ -73,17 +71,16 @@ public class AbsBroadcastActivity extends BaseActivity {
     protected void handleReceive(Context context, String action, Intent intent) {
     }
 
-
     @CallSuper
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mReceiver != null) {
             if (isUsingLocalBroadcast()) {
                 LocalBroadcastUtils.unregisterReceiver(mReceiver);
                 mReceiver = null;
             } else {
-                unregisterReceiver(mReceiver);
+                getActivity().unregisterReceiver(mReceiver);
                 mReceiver = null;
             }
 

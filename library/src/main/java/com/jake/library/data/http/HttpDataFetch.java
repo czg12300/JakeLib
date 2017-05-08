@@ -1,5 +1,7 @@
 package com.jake.library.data.http;
 
+import android.content.Context;
+
 import com.jake.library.global.LibraryController;
 import com.jake.library.utils.NetworkUtils;
 
@@ -21,6 +23,7 @@ public abstract class HttpDataFetch {
     private HttpRequestCallback callback;
     private RequestPackage requestPackage;
     private IResponse response;
+    private Context mAppContext;
 
     public HttpDataFetch(ExecutorService executorService) {
         this.executorService = executorService;
@@ -47,8 +50,14 @@ public abstract class HttpDataFetch {
         return this;
     }
 
+    public void setContext(Context context) {
+        if (context != null) {
+            mAppContext = context.getApplicationContext();
+        }
+    }
+
     public void request() {
-        if (!NetworkUtils.isNetworkAvailable(LibraryController.getInstance().getContext())) {
+        if (!NetworkUtils.isNetworkAvailable(mAppContext)) {
             if (callback != null) {
                 callback.onFail(HttpErrorCode.NETWORK_UNAVAILABLE.getCode(), HttpErrorCode.NETWORK_UNAVAILABLE.getMessage());
             }
